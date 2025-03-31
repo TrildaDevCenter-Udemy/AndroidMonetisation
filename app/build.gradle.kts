@@ -68,16 +68,21 @@ android {
         dataBinding = false
     }
 
+    // Specifies one flavor dimension.
+    flavorDimensions += "pricing"
+
     productFlavors {
 
         create("free") {
             dimension = "pricing"
-            applicationId = "com.devtides.androidmonetisation.free"
+            applicationIdSuffix = ".free"
+            versionNameSuffix = "-free"
         }
 
         create("paid") {
             dimension = "pricing"
-            applicationId = "com.devtides.androidmonetisation.paid"
+            applicationIdSuffix = ".paid"
+            versionNameSuffix = "-paid"
         }
     }
 
@@ -118,7 +123,6 @@ dependencies {
     implementation (libs.androidx.constraintlayout.core)
     implementation(libs.androidx.constraintlayout)
 
-    implementation(libs.androidx.compose.material3)
 
     // Retrofit
     implementation(libs.retrofit.core)
@@ -151,7 +155,7 @@ dependencies {
 
     // Billing
     implementation(libs.billing.client)
-    implementation(libs.billing.ktx.client)
+    //implementation(libs.billing.ktx.client)
 
     // coroutines
     implementation(libs.kotlinx.coroutines.core)

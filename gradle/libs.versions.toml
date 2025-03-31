@@ -307,7 +307,7 @@ retrofit-wire-converter = { group = "com.squareup.retrofit2", name = "converter-
 retrofit-jackson-converter = { group = "com.squareup.retrofit2", name = "converter-jackson", version.ref = "retrofit" }
 retrofit-rx-java3-adapter = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version = "2.11.0 "}
 
-retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit2", name = "kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 
 rx-java = {group = "io.reactivex.rxjava3", name = "rxjava" , version.ref = "rxjava"}
 rx-android = {group = "io.reactivex.rxjava3", name = "rxandroid" , version.ref = "rxandroid"}
