@@ -2,9 +2,9 @@ package com.devtides.androidmonetisation.presenter
 
 import com.devtides.androidmonetisation.model.CountriesService
 import com.devtides.androidmonetisation.model.Country
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class CountriesPresenter(val view: View) {
 
@@ -19,15 +19,15 @@ class CountriesPresenter(val view: View) {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<List<Country>>() {
-                override fun onSuccess(value: List<Country>?) {
-                    view.setCountries(value)
+
+                override fun onSuccess(t: List<Country>) {
+                    view.setCountries(t)
                 }
 
-                override fun onError(e: Throwable?) {
+                override fun onError(e: Throwable) {
                     e?.printStackTrace()
                     view.onError()
                 }
-
             })
     }
 

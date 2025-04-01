@@ -1,5 +1,4 @@
 plugins {
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.parcelize)
@@ -123,6 +122,10 @@ dependencies {
     implementation (libs.androidx.constraintlayout.core)
     implementation(libs.androidx.constraintlayout)
 
+    implementation(libs.androidx.swippe.refresh.layout)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.recyclerview.selection)
+
 
     // Retrofit
     implementation(libs.retrofit.core)
@@ -144,11 +147,11 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson.converter)
-    implementation(libs.retrofit.kotlin.serialization)
     implementation (libs.retrofit.rx.java3.adapter)
 
     // Glide
     implementation(libs.glide.core)
+    implementation(libs.glide.recyclerview.integration)
 
     // AdMobs
     implementation(libs.play.services.ads)

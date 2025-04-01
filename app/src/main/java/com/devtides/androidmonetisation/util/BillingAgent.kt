@@ -13,16 +13,16 @@ class BillingAgent(val activity: Activity, val callback: BillingCallback): Purch
 
     init {
         billingClient.startConnection(object : BillingClientStateListener {
+
             override fun onBillingServiceDisconnected() {
             }
 
-            override fun onBillingSetupFinished(billingResult: BillingResult?) {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if(billingResult?.responseCode == BillingClient.BillingResponseCode.OK) {
                     getAvailableProducts()
                     getAvailableSubscriptions()
                 }
             }
-
         })
     }
 

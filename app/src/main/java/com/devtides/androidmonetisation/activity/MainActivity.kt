@@ -1,14 +1,15 @@
 package com.devtides.androidmonetisation.activity
 
-import android.support.v7.app.AppCompatActivity
+import android.R.id.list
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
-import com.devtides.androidmonetisation.BuildConfig
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.devtides.androidmonetisation.R
 import com.devtides.androidmonetisation.adapter.CountryClickListener
 import com.devtides.androidmonetisation.adapter.CountryListAdapter
+import com.devtides.androidmonetisation.databinding.ActivityMainBinding
 import com.devtides.androidmonetisation.model.BannerAd
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.model.ListItem
@@ -17,17 +18,16 @@ import com.devtides.androidmonetisation.util.BillingAgent
 import com.devtides.androidmonetisation.util.BillingCallback
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.reward.RewardItem
-import com.google.android.gms.ads.reward.RewardedVideoAd
-import com.google.android.gms.ads.reward.RewardedVideoAdListener
+import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View, BillingCallback {
 
     private val countriesList = arrayListOf<ListItem>()
     private val countriesAdapter = CountryListAdapter(arrayListOf(), this)
-    private lateinit var rewardedAd: RewardedVideoAd
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var rewardedAd: RewardedAd
     private var billingAgent: BillingAgent? = null
     private var clickedCountry: Country? = null
 
@@ -35,9 +35,10 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        list.apply {
+        binding.list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = countriesAdapter
         }
@@ -72,34 +73,34 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     private fun showRewardedAd(country: Country) {
         val listener = object: RewardedVideoAdListener {
-            override fun onRewardedVideoAdClosed() {
+            fun onRewardedVideoAdClosed() {
                 showList()
             }
 
-            override fun onRewardedVideoAdLeftApplication() {
+            fun onRewardedVideoAdLeftApplication() {
                 showList()
             }
 
-            override fun onRewardedVideoAdLoaded() {
+            fun onRewardedVideoAdLoaded() {
                 rewardedAd.show()
             }
 
-            override fun onRewardedVideoAdOpened() {
+            fun onRewardedVideoAdOpened() {
             }
 
-            override fun onRewardedVideoCompleted() {
+            fun onRewardedVideoCompleted() {
                 showList()
             }
 
-            override fun onRewarded(p0: RewardItem?) {
+            fun onRewarded(p0: RewardItem?) {
                 rewardedAd.destroy(this@MainActivity)
                 startActivity(DetailActivity.getIntent(this@MainActivity, country))
             }
 
-            override fun onRewardedVideoStarted() {
+            fun onRewardedVideoStarted() {
             }
 
-            override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+            fun onRewardedVideoAdFailedToLoad(p0: Int) {
                 showList()
                 rewardedAd.destroy(this@MainActivity)
                 startActivity(DetailActivity.getIntent(this@MainActivity, country))
