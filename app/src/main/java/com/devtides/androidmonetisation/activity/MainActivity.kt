@@ -52,7 +52,8 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
             }
 
             if (googleMobileAdsConsentManager.canRequestAds) {
-                //initializeMobileAdsSdk()
+
+
             }
         }
 
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     }
 
     private fun showRewardedAd(country: Country) {
-       // val listener = object: RewardedVideoAdListener
+       val listener = object: RewardedVideoAdListener
          {
             fun onRewardedVideoAdClosed() {
                 showList()
@@ -108,7 +109,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
             }
 
             fun onRewarded(p0: RewardItem?) {
-//                rewardedAd.destroy(this@MainActivity)
+/               rewardedAd. destroy(this@MainActivity)
 //                startActivity(DetailActivity.getIntent(this@MainActivity, country))
             }
 
