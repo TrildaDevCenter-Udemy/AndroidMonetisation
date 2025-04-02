@@ -1,18 +1,23 @@
 package com.devtides.androidmonetisation.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import com.devtides.androidmonetisation.R
 import com.devtides.androidmonetisation.databinding.ActivityDetailBinding
-import com.devtides.androidmonetisation.databinding.ActivityMainBinding
 import com.devtides.androidmonetisation.model.Country
+import com.devtides.androidmonetisation.util.getProgressDrawable
+import com.devtides.androidmonetisation.util.loadImage
 import com.google.android.gms.ads.interstitial.InterstitialAd
 
 class DetailActivity : AppCompatActivity() {
 
     lateinit var country: Country
     private lateinit var binding: ActivityDetailBinding
+
 
     private lateinit var interstitialAd: InterstitialAd
 
@@ -21,13 +26,18 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(intent.hasExtra(PARAM_COUNTRY) && intent.getParcelableExtra<Country>(PARAM_COUNTRY) != null) {
-            country = intent.getParcelableExtra(PARAM_COUNTRY)
-        } else {
+        if (intent.hasExtra(PARAM_COUNTRY) == false) {
             finish()
         }
 
-//        showInterstitialAd()
+        val value = IntentCompat.getParcelableExtra(intent, PARAM_COUNTRY, Country::class.java)
+        if (value == null) {
+            finish()
+        }
+        country = value!!
+
+
+        showInterstitialAd()
 
         populate()
     }
@@ -44,12 +54,14 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun populate() {
-//        countryFlag.loadImage(country.flag, getProgressDrawable(this))
-//        textName.text = country.countryName
-//        textCapital.text = "Capital: ${country.capital}"
-//        textArea.text = "Area: ${country.area}"
-//        textPopulation.text = "Population: ${country.population}"
-//        textRegion.text = "Region: ${country.region}"
+        with(binding) {
+            countryFlag.loadImage(country.flag, getProgressDrawable(this.root.context))
+            textName.text = country.countryName
+            textCapital.text = "Capital: ${country.capital}"
+            textArea.text = "Area: ${country.area}"
+            textPopulation.text = "Population: ${country.population}"
+            textRegion.text = "Region: ${country.region}"
+        }
     }
 
     companion object {

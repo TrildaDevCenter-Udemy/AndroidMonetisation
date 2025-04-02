@@ -156,6 +156,9 @@ dependencies {
     // AdMobs
     implementation(libs.play.services.ads)
 
+    // Permissions
+    implementation(libs.accompanist.permissions)
+
     // Billing
     implementation(libs.billing.client)
     //implementation(libs.billing.ktx.client)

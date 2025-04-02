@@ -2,11 +2,21 @@
 
 accompanist = "0.36.0"
 androidDesugarJdkLibs = "2.1.2"
-# AGP and tools should be updated together
+# AGP and tools s1.9.1hould be updated together
 androidGradlePlugin = "8.9.1"
 androidTools = "34.0.0"
 androidxActivity = "1.9.3"
+androidxActivityKtx = "1.9.3"
+androidxActivityCompose = "1.9.3"
+androidxAnnotations = "1.9.1"
+androidxAnnotationsExperimental = "1.1.4"
 androidxAppCompat = "1.7.0"
+androidxAppSearch = "1.1.0-beta01"
+androidxAppSearchCompiler = "androidxAppSearch"
+androidxAppSearchLocalStorage = "androidxAppSearch"
+androidxAppSearchPlatformStorage = "androidxAppSearch"
+androidxAppSearchPlayServices = "androidxAppSearch"
+
 androidxBrowser = "1.8.0"
 androidxArchCore = "2.2.0"
 androidxCameraX = "1.4.0"
@@ -19,7 +29,14 @@ androidxConstraintLayout = "2.2.0"
 androidxConstraintLayoutCore = "1.1.0"
 androidxConstraintLayoutCompose = "1.1.0"
 androidxCore = "1.15.0"
-androidxCoreSplashscreen = "1.0.1"
+androidxCoreRole = "1.1.0"
+androidxCoreAnimation = "1.0.0"
+androidxCoreTestAnimation = "1.0.0"
+androidxCorePerformance = "1.0.0"
+androidxCoreGoogleShortcuts = "1.1.0"
+androidxCoreRemoteView = "1.1.0"
+androidxCoreSplashscreen = "1.2.0-beta01"
+
 androidxDataStore = "1.1.1"
 androidxEspresso = "3.6.1"
 androidxHiltNavigationCompose = "1.2.0"
@@ -94,6 +111,10 @@ moduleGraph = "2.5.0"
 okhttp = "4.12.0"
 
 play-services-ads = "23.5.0"
+user-messaging-platform = "3.1.0"
+
+
+
 
 protobuf = "3.25.2"
 protobufPlugin = "0.9.4"
@@ -129,7 +150,33 @@ accompanist-testharness = { group = "com.google.accompanist", name = "accompanis
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 androidx-arch-core-common = { group = "androidx.arch.core", name = "core-common", version.ref = "androidxArchCore" }
 androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidxArchCore"}
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+
+# Activities API
+#  for java
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidxActivity" }
+# for kotlin
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivityKtx" }
+# for Compose  and Kotlin
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
+
+# Annotations API
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotations" }
+# To use the Java-compatible @androidx.annotation.OptIn API annotation
+androidx-annotation-experimental = { group = "androidx.annotation", name = "annotation-experimental", version.ref = "androidxAnnotationsExperimental" }
+
+# App Search API
+androidx-appsearch = { group = "androidx.appsearch", name = "appsearch", version.ref = "androidxAppSearch" }
+#Use annotationProcessor instead of kapt if writing Java classes
+androidx-appsearch-compiler = { group = "androidx.appsearch", name = "appsearch-compiler", version.ref = "androidxAppSearchCompiler" }
+androidx-appsearch-local-storage = { group = "androidx.appsearch", name = "appsearch-local-storage", version.ref = "androidxAppSearchLocalStorage" }
+# PlatformStorage is compatible with Android 12+ devices, and offers additional features to LocalStorage.
+androidx-appsearch-platform-storage = { group = "androidx.appsearch", name = "appsearch-platform-storage", version.ref = "androidxAppSearchPlatformStorage" }
+#PlayServicesStorage is compatible with all devices that support Google Play Services on
+# all API levels. It offers the same features as PlatformStorage and is the recommended
+# solution for lower API levels on which PlatformStorage is not supported.
+androidx-appsearch-play-services = { group = "androidx.appsearch", name = "appsearch-play-services", version.ref = "androidxAppSearchPlayServices" }
+
+
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
@@ -172,7 +219,23 @@ androidx-constraintlayout-core = { group = "androidx.constraintlayout", name = "
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidxConstraintLayoutCompose" }
 
 
+# Java language implementation
+androidx-core = { group = "androidx.core", name = "core", version.ref = "androidxCore" }
+# Kotlin language implementation
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+# To use RoleManagerCompat
+androidx-core-role = { group = "androidx.core", name = "core-role", version.ref = "androidxCoreRole" }
+# To use the Animator APIs
+androidx-core-animation = { group = "androidx.core", name = "core-animation", version.ref = "androidxCoreAnimation" }
+#To test the Animator APIs
+androidx-core-animation-testing = { group = "androidx.core", name = "core-animation-testing", version.ref = "androidxCore" }
+#Optional - To enable APIs that query the performance characteristics of GMS devices.
+androidx-core-performance = { group = "androidx.core", name = "core-performance", version.ref = "androidxCorePerformance" }
+#Optional - to use ShortcutManagerCompat to donate shortcuts to be used by Google
+androidx-core-google-shortcuts = { group = "androidx.core", name = "core-google-shortcuts", version.ref = "androidxCoreGoogleShortcuts" }
+#Optional - to support backwards compatibility of RemoteViews
+androidx-core-remoteviews = { group = "androidx.core", name = "core-remoteviews", version.ref = "androidxCoreRemoteView" }
+#Optional - APIs for SplashScreen, including compatibility helpers on devices prior Android 12
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 
 androidx-dataStore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDataStore" }
@@ -304,6 +367,8 @@ mlkit-barcode-scanning = { group = "com.google.mlkit", name = "barcode-scanning"
 # google play services
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "play-services-ads" }
 
+# user consent
+user-messaging-platform = { group = "com.google.android.ump", name = "user-messaging-platform", version.ref = "user-messaging-platform" }
 
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }

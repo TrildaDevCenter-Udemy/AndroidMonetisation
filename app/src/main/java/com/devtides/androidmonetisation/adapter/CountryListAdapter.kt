@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.devtides.androidmonetisation.R
-import com.devtides.androidmonetisation.databinding.AdRowLayoutBinding
 import com.devtides.androidmonetisation.databinding.RowLayoutBinding
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.model.ListItem
@@ -30,11 +29,11 @@ class CountryListAdapter(var countries: ArrayList<ListItem>, val clickListener: 
             when(type) {
                 TYPE_COUNTRY -> {
                     val view = LayoutInflater.from(parent.context).inflate(R.layout.row_layout, parent, false)
-                    CountryViewHolder(view, clickListener)
+                    CountryViewHolder(view , clickListener)
                 }
                 else -> {
-                    val view = LayoutInflater.from(parent.context).inflate(R.layout.ad_row_layout, parent, false)
-                    AdViewHolder(view)
+//                    val view = LayoutInflater.from(parent.context).inflate(R.layout.ad_row_layout, parent, false)
+//                    AdViewHolder(view)
                 }
             }
 
@@ -47,34 +46,34 @@ class CountryListAdapter(var countries: ArrayList<ListItem>, val clickListener: 
         holder.bind(countries[position])
     }
 
-    abstract class CountryListViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    abstract class CountryListViewHolder(view: View): RecyclerView.ViewHolder(view!!) {
         abstract fun bind(item: ListItem)
     }
 
-    class CountryViewHolder(view: RowLayoutBinding?, var clickListener: CountryClickListener): CountryListViewHolder(view) {
+    class CountryViewHolder(view: View, var clickListener: CountryClickListener): CountryListViewHolder(view) {
 
-        private val layout = view?.layout
-        private val imageView = view?.imageView
-        private val countryName = view?.name
-        private val countryCapital = view?.capital
+        private val layout = view.layout
+        private val imageView = view.imageView
+        private val countryName = view.name
+        private val countryCapital = view.capital
 
         override fun bind(item: ListItem) {
             val country = item as Country
             countryName?.text = country.countryName
             countryCapital?.text = country.capital
-            imageView?.loadImage(country.flag, getProgressDrawable(imageView.context))
+            imageView.loadImage(country.flag, getProgressDrawable(imageView.context))
 
-            layout?.setOnClickListener { clickListener.onCountryClick(country) }
+            layout.setOnClickListener { clickListener.onCountryClick(country) }
         }
     }
 
-    class AdViewHolder(view: RowLayoutBinding): CountryListViewHolder(view) {
+    class AdViewHolder(view: View): CountryListViewHolder(view) {
 
-        var adView = view
+        var adView = view.adView
 
         override fun bind(item: ListItem) {
             val adRequest = AdRequest.Builder().build()
-            //adView.loadAd(adRequest)
+            adView.loadAd(adRequest)
         }
     }
 }

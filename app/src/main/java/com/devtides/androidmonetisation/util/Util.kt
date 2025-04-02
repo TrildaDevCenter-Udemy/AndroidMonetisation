@@ -2,6 +2,7 @@ package com.devtides.androidmonetisation.util
 
 import android.content.Context
 import android.widget.ImageView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.devtides.androidmonetisation.R
