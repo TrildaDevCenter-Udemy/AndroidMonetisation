@@ -1,11 +1,11 @@
 package com.devtides.androidmonetisation.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.devtides.androidmonetisation.BuildConfig
 import com.devtides.androidmonetisation.adapter.CountryClickListener
 import com.devtides.androidmonetisation.adapter.CountryListAdapter
 import com.devtides.androidmonetisation.databinding.ActivityMainBinding
@@ -21,6 +21,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View, BillingCallback {
 
@@ -52,11 +53,11 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         googleMobileAdsConsentManager.gatherConsent(this) { error ->
             if (error != null) {
                 // Consent not obtained in current session.
-                Log.d(TAG, "${error.errorCode}: ${error.message}")
+                Timber.d(TAG, "${error.errorCode}: ${error.message}")
             }
 
             if (googleMobileAdsConsentManager.canRequestAds) {
-                Log.d(TAG, "${TAG}: Consent is validated by User")
+                Timber.d(TAG, "${TAG}: Consent is validated by User")
             }
         }
 

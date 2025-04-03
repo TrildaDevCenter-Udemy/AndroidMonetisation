@@ -6,7 +6,9 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.devtides.androidmonetisation.R
 import com.devtides.androidmonetisation.application.Monitor
+import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import java.util.concurrent.TimeUnit
