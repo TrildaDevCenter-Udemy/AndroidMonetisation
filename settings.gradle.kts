@@ -1,8 +1,8 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
@@ -14,9 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-
-
-
 rootProject.name = "AndroidMonetisation"
-
 include (":app")
