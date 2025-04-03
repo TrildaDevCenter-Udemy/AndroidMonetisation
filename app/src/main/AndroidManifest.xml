@@ -15,9 +15,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
 
-    <meta-data
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- android:value="ca-app-pub-9057526686789846~3851400004" -->
+        <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9057526686789846~3851400004"/>
+
         <activity
             android:name=".activity.DetailActivity"
             android:exported="true"/>
