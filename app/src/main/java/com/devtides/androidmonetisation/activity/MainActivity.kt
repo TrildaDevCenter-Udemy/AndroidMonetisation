@@ -16,8 +16,12 @@ import com.devtides.androidmonetisation.presenter.CountriesPresenter
 import com.devtides.androidmonetisation.util.BillingAgent
 import com.devtides.androidmonetisation.util.BillingCallback
 import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View, BillingCallback {
 
@@ -52,8 +56,11 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
             }
 
             if (googleMobileAdsConsentManager.canRequestAds) {
-
-
+                val backgroundScope = CoroutineScope(Dispatchers.IO)
+                backgroundScope.launch {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this@MainActivity) {}
+                }
             }
         }
 
