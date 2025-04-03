@@ -110,12 +110,16 @@ dependencies {
     implementation(libs.androidx.tools.core)
     implementation(libs.androidx.ui.viewbinding)
 
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.lifecycle.reactivestreams.ktx)
+    implementation (libs.androidx.lifecycle.viewmodel.savedstate)
+    implementation (libs.androidx.lifecycle.process)
+
     androidTestImplementation(libs.androidx.work.testing)
     implementation (libs.androidx.work.mutiprocess)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-
 
     // compose layouts
     // compose constraints layout
@@ -126,18 +130,15 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.recyclerview.selection)
 
-
     // Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson.converter)
 
-
-    //GSON
+    // GSON
     implementation (libs.gson)
 
-    //  Logging
+    // Logging
     implementation (libs.timber)
-
 
     // RxJava RxKotlin RxAndroid
     implementation(libs.rx.java)
@@ -155,6 +156,9 @@ dependencies {
 
     // AdMobs
     implementation(libs.play.services.ads)
+
+    // User messaging platform , to get user  consent
+    implementation(libs.user.messaging.platform)
 
     // Permissions
     implementation(libs.accompanist.permissions)

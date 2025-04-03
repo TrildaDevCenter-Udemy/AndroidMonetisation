@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
-import com.devtides.androidmonetisation.R
 import com.devtides.androidmonetisation.databinding.ActivityDetailBinding
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.util.getProgressDrawable
@@ -35,7 +34,6 @@ class DetailActivity : AppCompatActivity() {
             finish()
         }
         country = value!!
-
 
         showInterstitialAd()
 

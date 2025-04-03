@@ -13,11 +13,10 @@ import com.devtides.androidmonetisation.model.BannerAd
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.model.ListItem
 import com.devtides.androidmonetisation.presenter.CountriesPresenter
-import com.devtides.androidmonetisation.util.BillingAgent
 import com.devtides.androidmonetisation.util.BillingCallback
 import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.rewarded.RewardedAd
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,9 +29,9 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager
-
     private lateinit var rewardedAd: RewardedAd
-    private var billingAgent: BillingAgent? = null
+
+//    private var billingAgent: BillingAgent? = null
     private var clickedCountry: Country? = null
 
     private val presenter = CountriesPresenter(this)
@@ -48,6 +47,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         }
 
         googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(applicationContext)
+
         // [START can_request_ads]
         googleMobileAdsConsentManager.gatherConsent(this) { error ->
             if (error != null) {
@@ -56,37 +56,35 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
             }
 
             if (googleMobileAdsConsentManager.canRequestAds) {
-                val backgroundScope = CoroutineScope(Dispatchers.IO)
-                backgroundScope.launch {
-                    // Initialize the Google Mobile Ads SDK on a background thread.
-                    MobileAds.initialize(this@MainActivity) {}
-                }
+                Log.d(TAG, "${TAG}: Consent is validated by User")
             }
         }
 
 
-        billingAgent = BillingAgent(this, this)
+//        billingAgent = BillingAgent(this, this)
     }
 
     override fun onDestroy() {
-        billingAgent?.onDestroy()
-        billingAgent = null
+//        billingAgent?.onDestroy()
+//        billingAgent = null
         super.onDestroy()
     }
-
     override fun onCountryClick(country: Country) {
-//        if(BuildConfig.FLAVOR == "free") {
-//            progress.visibility = View.VISIBLE
-//            retryButton.visibility = View.GONE
-//            list.visibility = View.GONE
-//            showRewardedAd(country)
-//        } else {
-//            startActivity(DetailActivity.getIntent(this, country))
-//        }
+        if(BuildConfig.FLAVOR == "free")
+        {
+            with(binding) {
+                binding.progress.visibility = View.VISIBLE
+                binding.retryButton.visibility = View.GONE
+                binding.list.visibility = View.GONE
+            }
+            showRewardedAd(country)
+        } else {
+            startActivity(DetailActivity.getIntent(this, country))
+        }
 
         clickedCountry = country
 //        billingAgent?.purchaseView()
-        billingAgent?.purchaseSubscription()
+//        billingAgent?.purchaseSubscription()
     }
 
     override fun onTokenConsumed() {
@@ -94,41 +92,42 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     }
 
     private fun showRewardedAd(country: Country) {
-       val listener = object: RewardedVideoAdListener
-         {
-            fun onRewardedVideoAdClosed() {
-                showList()
-            }
 
-            fun onRewardedVideoAdLeftApplication() {
-                showList()
-            }
-
-            fun onRewardedVideoAdLoaded() {
-               // rewardedAd.show()
-            }
-
-            fun onRewardedVideoAdOpened() {
-            }
-
-            fun onRewardedVideoCompleted() {
-                showList()
-            }
-
-            fun onRewarded(p0: RewardItem?) {
-/               rewardedAd. destroy(this@MainActivity)
+//       val listener = object: RewardVideoAdListener
+//         {
+//            fun onRewardedVideoAdClosed() {
+//                showList()
+//            }
+//
+//            fun onRewardedVideoAdLeftApplication() {
+//                showList()
+//            }
+//
+//            fun onRewardedVideoAdLoaded() {
+//               // rewardedAd.show()
+//            }
+//
+//            fun onRewardedVideoAdOpened() {
+//            }
+//
+//            fun onRewardedVideoCompleted() {
+//                showList()
+//            }
+//
+//            fun onRewarded(p0: RewardItem?) {
+//              rewardedAd. destroy(this@MainActivity)
 //                startActivity(DetailActivity.getIntent(this@MainActivity, country))
-            }
-
-            fun onRewardedVideoStarted() {
-            }
-
-            fun onRewardedVideoAdFailedToLoad(p0: Int) {
+//            }
+//
+//            fun onRewardedVideoStarted() {
+//            }
+//
+//            fun onRewardedVideoAdFailedToLoad(p0: Int) {
 //                showList()
 //                rewardedAd.destroy(this@MainActivity)
 //                startActivity(DetailActivity.getIntent(this@MainActivity, country))
-            }
-        }
+//            }
+//        }
 
 //        rewardedAd = MobileAds.getRewardedVideoAdInstance(this)
 //        rewardedAd.rewardedVideoAdListener = listener
@@ -185,9 +184,14 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         }
     }
 
+
+
+
     companion object {
         // This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.
-        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741"
+        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917"
+        private const val COUNTER_TIME = 10L
+        private const val GAME_OVER_REWARD = 1
         private const val TAG = "MainActivity"
 
         // Check your logcat output for the test device hashed ID e.g.

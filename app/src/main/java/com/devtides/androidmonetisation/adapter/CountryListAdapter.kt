@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.devtides.androidmonetisation.R
 import com.devtides.androidmonetisation.databinding.RowLayoutBinding
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.model.ListItem
