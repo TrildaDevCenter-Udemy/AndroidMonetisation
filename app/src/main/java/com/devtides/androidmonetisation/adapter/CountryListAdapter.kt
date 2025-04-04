@@ -4,17 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.devtides.androidmonetisation.R
 import com.devtides.androidmonetisation.databinding.AdRowLayoutBinding
 import com.devtides.androidmonetisation.databinding.RowLayoutBinding
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.model.ListItem
 import com.devtides.androidmonetisation.model.TYPE_COUNTRY
+import com.devtides.androidmonetisation.model.TYPE_AD
 import com.devtides.androidmonetisation.util.getProgressDrawable
 import com.devtides.androidmonetisation.util.loadImage
 import com.google.android.gms.ads.AdRequest
+import timber.log.Timber
 
-class CountryListAdapter(var countries: ArrayList<ListItem>, val clickListener: CountryClickListener):
+
+class CountryListAdapter(private var countries: ArrayList<ListItem>, private val clickListener: CountryClickListener):
     RecyclerView.Adapter<CountryListAdapter.CountryListViewHolder>() {
 
     fun updateCountries(newCountries: ArrayList<ListItem>) {
@@ -25,17 +27,17 @@ class CountryListAdapter(var countries: ArrayList<ListItem>, val clickListener: 
 
     override fun getItemViewType(position: Int) = countries[position].type
 
-    override fun onCreateViewHolder(parent: ViewGroup, type: Int): CountryListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryListViewHolder {
         val viewHolder =
-            when(type) {
+            when(viewType) {
                 TYPE_COUNTRY -> {
-                    val view : RowLayoutBinding = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.row_layout, parent, false) as RowLayoutBinding
-                    CountryViewHolder(view , clickListener)
+                    val binding = RowLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    CountryViewHolder(binding , clickListener)
                 }
+
                 else -> {
-                   val view  : AdRowLayoutBinding = LayoutInflater.from(parent.context).inflate(R.layout.ad_row_layout, parent, false)
-                   AdViewHolder(view) as AdRowLayoutBinding
+                    val binding = AdRowLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    AdViewHolder(binding)
                 }
             }
 
@@ -48,16 +50,16 @@ class CountryListAdapter(var countries: ArrayList<ListItem>, val clickListener: 
         holder.bind(countries[position])
     }
 
-    abstract class CountryListViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    abstract class CountryListViewHolder(binding: View): RecyclerView.ViewHolder(binding) {
         abstract fun bind(item: ListItem)
     }
 
-    class CountryViewHolder(view: RowLayoutBinding , var clickListener: CountryClickListener): CountryListViewHolder(view) {
+    class CountryViewHolder(private val binding: RowLayoutBinding, private var clickListener: CountryClickListener): CountryListViewHolder(binding.root) {
 
-        private val layout = view.layout
-        private val imageView = view.imageView
-        private val countryName = view.name
-        private val countryCapital = view.capital
+        private val layout = binding.layout
+        private val imageView = binding.imageView
+        private val countryName = binding.name
+        private val countryCapital = binding.capital
 
         override fun bind(item: ListItem) {
             val country = item as Country
@@ -69,9 +71,9 @@ class CountryListAdapter(var countries: ArrayList<ListItem>, val clickListener: 
         }
     }
 
-    class AdViewHolder(view: AdRowLayoutBinding): CountryListViewHolder(view as View) {
+    class AdViewHolder(val binding: AdRowLayoutBinding): CountryListViewHolder(binding.root) {
 
-        var adView = view.adView
+        private var adView = binding.adView
 
         override fun bind(item: ListItem) {
             val adRequest = AdRequest.Builder().build()
