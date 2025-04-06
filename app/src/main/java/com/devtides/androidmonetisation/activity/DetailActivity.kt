@@ -3,22 +3,25 @@ package com.devtides.androidmonetisation.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import com.devtides.androidmonetisation.databinding.ActivityDetailBinding
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.util.getProgressDrawable
 import com.devtides.androidmonetisation.util.loadImage
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import timber.log.Timber
+
 
 class DetailActivity : AppCompatActivity() {
 
     lateinit var country: Country
     private lateinit var binding: ActivityDetailBinding
 
-
-    private lateinit var interstitialAd: InterstitialAd
+    private var mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +44,19 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun showInterstitialAd() {
-//        interstitialAd = InterstitialAd(this)
-//        interstitialAd.adUnitId = getString(R.string.interstitial_ad_id)
-//        //interstitialAd.loadAd(AdRequest.Builder().build())
-//        interstitialAd.adListener = object: AdListener() {
-//            override fun onAdLoaded() {
-//                interstitialAd.show()
-//            }
-//        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Timber.tag(TAG).d(adError?.toString())
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Timber.tag(TAG).d("Ad was loaded.")
+                mInterstitialAd = interstitialAd
+            }
+        })
     }
 
     fun populate() {
@@ -64,6 +72,7 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         val PARAM_COUNTRY = "country"
+        val TAG = "DetailActivity"
 
         fun getIntent(context: Context, country: Country?): Intent {
             val intent = Intent(context, DetailActivity::class.java)

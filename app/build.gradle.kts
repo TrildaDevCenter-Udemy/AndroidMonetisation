@@ -165,7 +165,7 @@ dependencies {
 
     // Billing
     implementation(libs.billing.client)
-    //implementation(libs.billing.ktx.client)
+    implementation(libs.billing.ktx.client)
 
     // coroutines
     implementation(libs.kotlinx.coroutines.core)

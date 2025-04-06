@@ -1,6 +1,7 @@
 package com.devtides.androidmonetisation.activity
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,14 +14,17 @@ import com.devtides.androidmonetisation.model.BannerAd
 import com.devtides.androidmonetisation.model.Country
 import com.devtides.androidmonetisation.model.ListItem
 import com.devtides.androidmonetisation.presenter.CountriesPresenter
+import com.devtides.androidmonetisation.util.BillingAgent
 import com.devtides.androidmonetisation.util.BillingCallback
 import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View, BillingCallback {
@@ -30,15 +34,24 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager
-    private lateinit var rewardedAd: RewardedAd
+    private  var mRewardedAd: RewardedAd? = null
 
-//    private var billingAgent: BillingAgent? = null
-    private var clickedCountry: Country? = null
+    private var mBillingAgent: BillingAgent? = null
+    private var mClickedCountry: Country? = null
 
-    private val presenter = CountriesPresenter(this)
+    private val mPresenter = CountriesPresenter(this)
+
+    private var mCoinCount: Int = 0
+    private var mCountdownTimer: CountDownTimer? = null
+    private var mGameOver = false
+    private var mGamePaused = false
+    private var mIsLoading = false
+    private var mTimeRemaining: Long = 0L
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -47,27 +60,47 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
             adapter = countriesAdapter
         }
 
+        Timber.tag(TAG).d("Google Mobile Ads SDK Version: " + MobileAds.getVersion())
+
         googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(applicationContext)
 
         // [START can_request_ads]
         googleMobileAdsConsentManager.gatherConsent(this) { error ->
             if (error != null) {
                 // Consent not obtained in current session.
-                Timber.d(TAG, "${error.errorCode}: ${error.message}")
+                Timber.tag(TAG).d( "${error.errorCode}: ${error.message}")
             }
 
+            startGame()
+
             if (googleMobileAdsConsentManager.canRequestAds) {
-                Timber.d(TAG, "${TAG}: Consent is validated by User")
+                Timber.tag(TAG).d( "Consent is validated by User")
+            }
+
+            if (googleMobileAdsConsentManager.isPrivacyOptionsRequired) {
+                // Regenerate the options menu to include a privacy setting.
+                invalidateOptionsMenu()
             }
         }
 
+       mBillingAgent = BillingAgent(this, this)
 
-//        billingAgent = BillingAgent(this, this)
+        startGame()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        pauseGame()
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        resumeGame()
     }
 
     override fun onDestroy() {
-//        billingAgent?.onDestroy()
-//        billingAgent = null
+        mBillingAgent?.onDestroy()
+        mBillingAgent = null
         super.onDestroy()
     }
     override fun onCountryClick(country: Country) {
@@ -78,22 +111,128 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                 binding.retryButton.visibility = View.GONE
                 binding.list.visibility = View.GONE
             }
-            showRewardedAd(country)
+            showRewardedVideo(country)
         } else {
             startActivity(DetailActivity.getIntent(this, country))
         }
 
-        clickedCountry = country
-//        billingAgent?.purchaseView()
-//        billingAgent?.purchaseSubscription()
+        mClickedCountry = country
+        mBillingAgent?.purchaseView()
+        mBillingAgent?.purchaseSubscription()
     }
 
     override fun onTokenConsumed() {
-        startActivity(DetailActivity.getIntent(this@MainActivity, clickedCountry))
+        startActivity(DetailActivity.getIntent(this@MainActivity, mClickedCountry))
     }
 
-    private fun showRewardedAd(country: Country) {
 
+    private fun loadRewardedAd() {
+        if (mRewardedAd == null) {
+            mIsLoading = true
+            var adRequest = AdRequest.Builder().build()
+
+            RewardedAd.load(
+                this,
+                AD_UNIT_ID,
+                adRequest,
+                object : RewardedAdLoadCallback() {
+                    override fun onAdFailedToLoad(adError: LoadAdError) {
+                        Timber.tag("TAG").d(adError.message)
+                        mIsLoading = false
+                        mRewardedAd = null
+                    }
+
+                    override fun onAdLoaded(ad: RewardedAd) {
+                        Timber.tag("TAG").d( "Ad was loaded.")
+                        mRewardedAd = ad
+                        mIsLoading = false
+                    }
+                }
+            )
+        }
+    }
+
+    private fun addCoins(coins: Int) {
+        mCoinCount += coins
+        binding.coinCountText.text = "Coins: $mCoinCount"
+    }
+
+    private fun startGame() {
+        // Hide the retry button, load the ad, and start the timer.
+        binding.retryButton.visibility = View.INVISIBLE
+        binding.showVideoButton.visibility = View.INVISIBLE
+        createTimer(COUNTER_TIME)
+        mGamePaused = false
+        mGameOver = false
+    }
+
+    // Create the game timer, which counts down to the end of the level
+    // and shows the "retry" button.
+    private fun createTimer(time: Long) {
+        mCountdownTimer?.cancel()
+
+        mCountdownTimer =
+            object : CountDownTimer(time * 1000, 50) {
+                override fun onTick(millisUnitFinished: Long) {
+                    mTimeRemaining = millisUnitFinished / 1000 + 1
+                    binding.timer.text = "seconds remaining: $mTimeRemaining"
+                }
+
+                override fun onFinish() {
+                    binding.showVideoButton.visibility = View.VISIBLE
+                    binding.timer.text = "The game has ended!"
+                    addCoins(GAME_OVER_REWARD)
+                    binding.retryButton.visibility = View.VISIBLE
+                    mGameOver = true
+                }
+            }
+
+        mCountdownTimer?.start()
+    }
+
+
+    private fun showRewardedVideo(country: Country) {
+        binding.showVideoButton.visibility = View.INVISIBLE
+        if (mRewardedAd != null) {
+            mRewardedAd?.fullScreenContentCallback =
+                object : FullScreenContentCallback() {
+                    override fun onAdDismissedFullScreenContent() {
+                        Timber.tag("TAG").d("Ad was dismissed.")
+                        // Don't forget to set the ad reference to null so you
+                        // don't show the ad a second time.
+                        mRewardedAd = null
+                        if (googleMobileAdsConsentManager.canRequestAds) {
+                            loadRewardedAd()
+                        }
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                        Timber.tag("TAG").d("Ad failed to show.")
+                        // Don't forget to set the ad reference to null so you
+                        // don't show the ad a second time.
+                        mRewardedAd = null
+                    }
+
+                    override fun onAdShowedFullScreenContent() {
+                        Timber.tag("TAG").d("Ad showed fullscreen content.")
+                        // Called when ad is dismissed.
+                    }
+                }
+
+            mRewardedAd?.show(
+                this,
+                OnUserEarnedRewardListener { rewardItem ->
+                    // Handle the reward.
+                    val rewardAmount = rewardItem.amount
+                    val rewardType = rewardItem.type
+                    addCoins(rewardAmount)
+                    Timber.tag("TAG").d("User earned the reward.")
+                },
+            )
+        }
+    }
+//    private fun showRewardedAd(country: Country) {
+//
 //       val listener = object: RewardVideoAdListener
 //         {
 //            fun onRewardedVideoAdClosed() {
@@ -129,11 +268,25 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 //                startActivity(DetailActivity.getIntent(this@MainActivity, country))
 //            }
 //        }
-
+//
+//        var adRequest = AdRequest.Builder().build()
+//
+//        RewardedAd.load(this,"ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
+//            override fun onAdFailedToLoad(adError: LoadAdError) {
+//                Timber.tag(TAG).d( adError?.toString())
+//                rewardedAd = null
+//            }
+//
+//            override fun onAdLoaded(ad: RewardedAd) {
+//                Timber.tag(TAG).d("Ad was loaded.")
+//                rewardedAd = ad
+//            }
+//        })
+//
 //        rewardedAd = MobileAds.getRewardedVideoAdInstance(this)
 //        rewardedAd.rewardedVideoAdListener = listener
 //        rewardedAd.loadAd(getString(R.string.rewarded_ad_id), AdRequest.Builder().build())
-    }
+//    }
 
     fun showList() {
         with(binding) {
@@ -144,7 +297,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     }
 
     fun onRetry(v: View) {
-        presenter.onRetry()
+        mPresenter.onRetry()
         with(binding) {
             retryButton.visibility = View.GONE
             progress.visibility = View.VISIBLE
@@ -185,8 +338,21 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         }
     }
 
+    private fun pauseGame() {
+        if (mGameOver || mGamePaused) {
+            return
+        }
+        mCountdownTimer?.cancel()
+        mGamePaused = true
+    }
 
-
+    private fun resumeGame() {
+        if (mGameOver || !mGamePaused) {
+            return
+        }
+        createTimer(mTimeRemaining)
+        mGamePaused = false
+    }
 
     companion object {
         // This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.

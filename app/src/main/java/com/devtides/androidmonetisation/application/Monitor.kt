@@ -46,6 +46,7 @@ class Monitor :
     }
   }
 
+
   /** ActivityLifecycleCallback methods. */
   override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
 
@@ -140,7 +141,7 @@ class Monitor :
             appOpenAd = ad
             isLoadingAd = false
             loadTime = Date().time
-            Timber.d(LOG_TAG, "onAdLoaded.")
+            Timber.tag(LOG_TAG).d("onAdLoaded.")
             Toast.makeText(context, "onAdLoaded", Toast.LENGTH_SHORT).show()
           }
 
@@ -151,7 +152,7 @@ class Monitor :
            */
           override fun onAdFailedToLoad(loadAdError: LoadAdError) {
             isLoadingAd = false
-            Timber.d(LOG_TAG, "onAdFailedToLoad: " + loadAdError.message)
+            Timber.tag(LOG_TAG).d("onAdFailedToLoad: " + loadAdError.message)
             Toast.makeText(context, "onAdFailedToLoad", Toast.LENGTH_SHORT).show()
           }
         },
@@ -198,13 +199,13 @@ class Monitor :
     fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener) {
       // If the app open ad is already showing, do not show the ad again.
       if (isShowingAd) {
-        Timber.d(LOG_TAG, "The app open ad is already showing.")
+        Timber.tag(LOG_TAG).d("The app open ad is already showing.")
         return
       }
 
       // If the app open ad is not available yet, invoke the callback.
       if (!isAdAvailable()) {
-        Timber.d(LOG_TAG, "The app open ad is not ready yet.")
+        Timber.tag(LOG_TAG).d("The app open ad is not ready yet.")
         onShowAdCompleteListener.onShowAdComplete()
         if (googleMobileAdsConsentManager.canRequestAds) {
           loadAd(activity)
@@ -212,7 +213,7 @@ class Monitor :
         return
       }
 
-      Timber.d(LOG_TAG, "Will show ad.")
+      Timber.tag(LOG_TAG).d("Will show ad.")
 
       appOpenAd?.fullScreenContentCallback =
         object : FullScreenContentCallback() {
@@ -221,7 +222,7 @@ class Monitor :
             // Set the reference to null so isAdAvailable() returns false.
             appOpenAd = null
             isShowingAd = false
-            Timber.d(LOG_TAG, "onAdDismissedFullScreenContent.")
+            Timber.tag(LOG_TAG).d("onAdDismissedFullScreenContent.")
             Toast.makeText(activity, "onAdDismissedFullScreenContent", Toast.LENGTH_SHORT).show()
 
             onShowAdCompleteListener.onShowAdComplete()
@@ -234,7 +235,7 @@ class Monitor :
           override fun onAdFailedToShowFullScreenContent(adError: AdError) {
             appOpenAd = null
             isShowingAd = false
-            Timber.d(LOG_TAG, "onAdFailedToShowFullScreenContent: " + adError.message)
+            Timber.tag(LOG_TAG).d("onAdFailedToShowFullScreenContent: " + adError.message)
             Toast.makeText(activity, "onAdFailedToShowFullScreenContent", Toast.LENGTH_SHORT).show()
 
             onShowAdCompleteListener.onShowAdComplete()
@@ -245,7 +246,7 @@ class Monitor :
 
           /** Called when fullscreen content is shown. */
           override fun onAdShowedFullScreenContent() {
-            Timber.d(LOG_TAG, "onAdShowedFullScreenContent.")
+            Timber.tag(LOG_TAG).d("onAdShowedFullScreenContent.")
             Toast.makeText(activity, "onAdShowedFullScreenContent", Toast.LENGTH_SHORT).show()
           }
         }

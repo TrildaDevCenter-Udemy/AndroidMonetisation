@@ -77,7 +77,9 @@ class CountryListAdapter(private var countries: ArrayList<ListItem>, private val
 
         override fun bind(item: ListItem) {
             val adRequest = AdRequest.Builder().build()
+
             adView.loadAd(adRequest)
+
         }
     }
 }
