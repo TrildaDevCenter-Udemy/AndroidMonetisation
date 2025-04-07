@@ -109,7 +109,12 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
             with(binding) {
                 binding.progress.visibility = View.VISIBLE
                 binding.retryButton.visibility = View.GONE
-                binding.list.visibility = View.GONE
+                binding.showVideoButton.visibility = View.GONE
+                binding.list.visibility = View.VISIBLE
+
+                binding.gameTitle .visibility = View.GONE
+                binding.coinCountText .visibility = View.GONE
+                binding.timer.visibility = View.GONE
             }
             showRewardedVideo(country)
         } else {
@@ -127,7 +132,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
 
     private fun loadRewardedAd() {
-        if (mRewardedAd == null) {
+        mRewardedAd?.let {
             mIsLoading = true
             var adRequest = AdRequest.Builder().build()
 
@@ -136,6 +141,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                 AD_UNIT_ID,
                 adRequest,
                 object : RewardedAdLoadCallback() {
+
                     override fun onAdFailedToLoad(adError: LoadAdError) {
                         Timber.tag("TAG").d(adError.message)
                         mIsLoading = false
@@ -159,9 +165,16 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     private fun startGame() {
         // Hide the retry button, load the ad, and start the timer.
+        binding.progress.visibility = View.VISIBLE
         binding.retryButton.visibility = View.INVISIBLE
         binding.showVideoButton.visibility = View.INVISIBLE
-        createTimer(COUNTER_TIME)
+        binding.list.visibility = View.VISIBLE
+
+        binding.gameTitle .visibility = View.INVISIBLE
+        binding.coinCountText .visibility = View.INVISIBLE
+        binding.timer.visibility = View.INVISIBLE
+
+        //createTimer(COUNTER_TIME)
         mGamePaused = false
         mGameOver = false
     }
@@ -192,10 +205,12 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
 
     private fun showRewardedVideo(country: Country) {
-        binding.showVideoButton.visibility = View.INVISIBLE
-        if (mRewardedAd != null) {
-            mRewardedAd?.fullScreenContentCallback =
+
+        mRewardedAd?.let()
+        {
+            mRewardedAd!!.fullScreenContentCallback =
                 object : FullScreenContentCallback() {
+
                     override fun onAdDismissedFullScreenContent() {
                         Timber.tag("TAG").d("Ad was dismissed.")
                         // Don't forget to set the ad reference to null so you
@@ -211,11 +226,13 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                         // Don't forget to set the ad reference to null so you
                         // don't show the ad a second time.
                         mRewardedAd = null
+                        startActivity(DetailActivity.getIntent(this@MainActivity, country))
                     }
 
                     override fun onAdShowedFullScreenContent() {
                         Timber.tag("TAG").d("Ad showed fullscreen content.")
                         // Called when ad is dismissed.
+                        startActivity(DetailActivity.getIntent(this@MainActivity, country))
                     }
                 }
 
@@ -342,7 +359,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         if (mGameOver || mGamePaused) {
             return
         }
-        mCountdownTimer?.cancel()
+        //mCountdownTimer?.cancel()
         mGamePaused = true
     }
 
@@ -350,7 +367,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         if (mGameOver || !mGamePaused) {
             return
         }
-        createTimer(mTimeRemaining)
+        //createTimer(mTimeRemaining)
         mGamePaused = false
     }
 
