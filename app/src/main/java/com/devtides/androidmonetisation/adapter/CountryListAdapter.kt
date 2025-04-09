@@ -82,4 +82,12 @@ class CountryListAdapter(private var countries: ArrayList<ListItem>, private val
 
         }
     }
+
+    companion object {
+        // This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.
+        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917"
+        private const val COUNTER_TIME = 10L
+        private const val GAME_OVER_REWARD = 1
+        private const val TAG = "CountryListAdapter"
+    }
 }
