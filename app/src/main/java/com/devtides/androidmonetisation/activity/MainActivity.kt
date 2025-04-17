@@ -104,18 +104,15 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         super.onDestroy()
     }
     override fun onCountryClick(country: Country) {
-        if(BuildConfig.FLAVOR == "free")
-        {
-            with(binding) {
-                binding.progress.visibility = View.VISIBLE
-                binding.retryButton.visibility = View.GONE
-                binding.showVideoButton.visibility = View.GONE
-                binding.list.visibility = View.VISIBLE
+        if(BuildConfig.FLAVOR == "free") {
 
-                binding.gameTitle .visibility = View.GONE
-                binding.coinCountText .visibility = View.GONE
-                binding.timer.visibility = View.GONE
-            }
+            SetupProgress(true)
+            SetupRetryButton()
+            SetupCountriesList()
+
+            ShowHideUnwantedItems(false)
+
+            loadRewardedAd()
             showRewardedVideo(country)
         } else {
             startActivity(DetailActivity.getIntent(this, country))
@@ -132,30 +129,28 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
 
     private fun loadRewardedAd() {
-        mRewardedAd?.let {
-            mIsLoading = true
-            var adRequest = AdRequest.Builder().build()
+        mIsLoading = true
+        var adRequest = AdRequest.Builder().build()
 
-            RewardedAd.load(
-                this,
-                AD_UNIT_ID,
-                adRequest,
-                object : RewardedAdLoadCallback() {
+        RewardedAd.load(
+            this,
+            AD_UNIT_ID,
+            adRequest,
+            object : RewardedAdLoadCallback() {
 
-                    override fun onAdFailedToLoad(adError: LoadAdError) {
-                        Timber.tag("TAG").d(adError.message)
-                        mIsLoading = false
-                        mRewardedAd = null
-                    }
-
-                    override fun onAdLoaded(ad: RewardedAd) {
-                        Timber.tag("TAG").d( "Ad was loaded.")
-                        mRewardedAd = ad
-                        mIsLoading = false
-                    }
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Timber.tag("TAG").d(adError.message)
+                    mIsLoading = false
+                    mRewardedAd = null
                 }
-            )
-        }
+
+                override fun onAdLoaded(ad: RewardedAd) {
+                    Timber.tag("TAG").d( "Ad was loaded.")
+                    mRewardedAd = ad
+                    mIsLoading = false
+                }
+            }
+        )
     }
 
     private fun addCoins(coins: Int) {
@@ -163,18 +158,45 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         binding.coinCountText.text = "Coins: $mCoinCount"
     }
 
+    private fun SetupProgress(show: Boolean) {
+        binding.progress.visibility = if (mIsLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun SetupRetryButton() {
+        binding.progress.visibility = if (!mIsLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun SetupCountriesList() {
+        binding.list.visibility = if (!mIsLoading) View.VISIBLE else View.GONE
+    }
+
+
+    private fun ShowHideUnwantedItems(show: Boolean) {
+        if (show) {
+            binding.gameTitle.visibility = View.VISIBLE
+            binding.coinCountText.visibility = View.VISIBLE
+            binding.showVideoButton.visibility = View.VISIBLE
+            binding.timer.visibility = View.VISIBLE
+        } else {
+            binding.gameTitle.visibility = View.GONE
+            binding.coinCountText.visibility = View.GONE
+            binding.showVideoButton.visibility = View.GONE
+            binding.timer.visibility = View.GONE
+        }
+    }
+
     private fun startGame() {
         // Hide the retry button, load the ad, and start the timer.
-        binding.progress.visibility = View.VISIBLE
-        binding.retryButton.visibility = View.INVISIBLE
-        binding.showVideoButton.visibility = View.INVISIBLE
-        binding.list.visibility = View.VISIBLE
+        SetupProgress(false)
+        SetupRetryButton()
+        SetupCountriesList()
 
-        binding.gameTitle .visibility = View.INVISIBLE
-        binding.coinCountText .visibility = View.INVISIBLE
-        binding.timer.visibility = View.INVISIBLE
+        binding.showVideoButton.visibility = View.INVISIBLE
+
+        ShowHideUnwantedItems(false)
 
         //createTimer(COUNTER_TIME)
+
         mGamePaused = false
         mGameOver = false
     }
@@ -206,35 +228,41 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     private fun showRewardedVideo(country: Country) {
 
-        mRewardedAd?.let()
-        {
-            mRewardedAd!!.fullScreenContentCallback =
-                object : FullScreenContentCallback() {
+        mRewardedAd?.let() {
+            it.fullScreenContentCallback = object : FullScreenContentCallback() {
 
-                    override fun onAdDismissedFullScreenContent() {
-                        Timber.tag("TAG").d("Ad was dismissed.")
-                        // Don't forget to set the ad reference to null so you
-                        // don't show the ad a second time.
-                        mRewardedAd = null
-                        if (googleMobileAdsConsentManager.canRequestAds) {
-                            loadRewardedAd()
-                        }
-                    }
+                override fun onAdClicked() {
+                    Timber.tag("TAG").d("Ad was clicked.")
+                }
 
-                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                        Timber.tag("TAG").d("Ad failed to show.")
-                        // Don't forget to set the ad reference to null so you
-                        // don't show the ad a second time.
-                        mRewardedAd = null
-                        startActivity(DetailActivity.getIntent(this@MainActivity, country))
-                    }
-
-                    override fun onAdShowedFullScreenContent() {
-                        Timber.tag("TAG").d("Ad showed fullscreen content.")
-                        // Called when ad is dismissed.
-                        startActivity(DetailActivity.getIntent(this@MainActivity, country))
+                override fun onAdDismissedFullScreenContent() {
+                    Timber.tag("TAG").d("Ad was dismissed.")
+                    // Don't forget to set the ad reference to null so you
+                    // don't show the ad a second time.
+                    mRewardedAd = null
+                    if (googleMobileAdsConsentManager.canRequestAds) {
+                        //loadRewardedAd()
                     }
                 }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    Timber.tag("TAG").d("Ad failed to show.")
+                    // Don't forget to set the ad reference to null so you
+                    // don't show the ad a second time.
+                    mRewardedAd = null
+                    startActivity(DetailActivity.getIntent(this@MainActivity, country))
+                }
+
+                override fun onAdImpression(){
+
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    Timber.tag("TAG").d("Ad showed fullscreen content.")
+                    // Called when ad is dismissed.
+                    startActivity(DetailActivity.getIntent(this@MainActivity, country))
+                }
+            }
 
             mRewardedAd?.show(
                 this,
@@ -253,11 +281,11 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 //       val listener = object: RewardVideoAdListener
 //         {
 //            fun onRewardedVideoAdClosed() {
-//                showList()
+//                showHideList(true)
 //            }
 //
 //            fun onRewardedVideoAdLeftApplication() {
-//                showList()
+//                showHideList(true)
 //            }
 //
 //            fun onRewardedVideoAdLoaded() {
@@ -268,7 +296,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 //            }
 //
 //            fun onRewardedVideoCompleted() {
-//                showList()
+//                showHideList(true)
 //            }
 //
 //            fun onRewarded(p0: RewardItem?) {
@@ -280,7 +308,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 //            }
 //
 //            fun onRewardedVideoAdFailedToLoad(p0: Int) {
-//                showList()
+//                showHideList(true)
 //                rewardedAd.destroy(this@MainActivity)
 //                startActivity(DetailActivity.getIntent(this@MainActivity, country))
 //            }
@@ -305,7 +333,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 //        rewardedAd.loadAd(getString(R.string.rewarded_ad_id), AdRequest.Builder().build())
 //    }
 
-    fun showList() {
+    fun showHideList(show: Boolean) {
         with(binding) {
             progress.visibility = View.GONE
             list.visibility = View.VISIBLE
