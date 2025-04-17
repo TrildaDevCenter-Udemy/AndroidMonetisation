@@ -13,23 +13,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true"
         tools:targetApi="31">
 
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-        <!-- android:value="ca-app-pub-9057526686789846~3851400004" -->
+        <!-- training apps android:value="ca-app-pub-9057526686789846~3851400004" -->
+        <!-- see TrildaDevCenter / Paul Plaquette admobs account for "Monetization"  Application ID or Yours Application entry -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9057526686789846~3851400004"/>
+            android:value="ca-app-pub-2192590212879558~7050143982"/>
 
         <activity
             android:name="com.devtides.androidmonetisation.activity.DetailActivity"
+            android:hardwareAccelerated="true"
             android:exported="true"/>
         <activity
             android:name="com.devtides.androidmonetisation.activity.SplashActivity"
+            android:hardwareAccelerated="true"
             android:exported="true"/>
 
         <activity
             android:name="com.devtides.androidmonetisation.activity.MainActivity"
+            android:hardwareAccelerated="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
