@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="banner_ad_id">ca-app-pub-3940256099942544/6300978111</string>
+    <!--
+    <string name="country_item_banner_add_id">ca-app-pub-2192590212879558/1526354560</string>
+    <string name="interstitial_ad_id">ca-app-pub-2192590212879558/5050666607</string>
+    <string name="rewarded_details_ad_id">ca-app-pub-2192590212879558/1091240296</string>
+
+    -->
+
+    <string name="country_item_banner_add_id">ca-app-pub-3940256099942544/9214589741</string>
     <string name="interstitial_ad_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="rewarded_ad_id">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="rewarded_details_ad_id">ca-app-pub-3940256099942544/5224354917</string>
 </resources>
