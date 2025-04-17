@@ -258,7 +258,7 @@ class Monitor :
   companion object {
     // This is an ad unit ID for a test ad. Replace with your own app open ad unit ID.
     private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/9257395921"
-    private const val LOG_TAG = "ApplicationMonitor"
+    private const val LOG_TAG = "Monitor"
 
     // Check your logcat output for the test device hashed ID e.g.
     // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
