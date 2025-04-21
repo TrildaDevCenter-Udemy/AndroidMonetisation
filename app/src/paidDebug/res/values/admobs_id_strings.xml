@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- see https://developers.google.com/admob/android/test-ads#kotlin -->
     <string name="test_device_id">ca-app-pub-3940256099942544/6300978111</string>
+
     <string name="admobs_application_id">ca-app-pub-3940256099942544~3347511713</string>
+
     <string name="app_open_id">ca-app-pub-3940256099942544/9257395921</string>
     <string name="adaptive_banner_add_id">ca-app-pub-3940256099942544/9214589741"</string>
     <string name="fix_sized_banner_add_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_add_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="rewarded_add_id">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="interstitial_ad_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="rewarded_ad_id">ca-app-pub-3940256099942544/5224354917</string>
     <string name="rewarded_interstitial_add_id">ca-app-pub-3940256099942544/5354046379</string>
-    <string name="native_add_id">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="native_ad_id">ca-app-pub-3940256099942544/2247696110</string>
     <string name="native_video_add_id">	ca-app-pub-3940256099942544/1044960115</string>
 
-    <!-- non debug , id are from AdMode, use flavors in build variants -->
-    <!--
-    <string name="monetize_admobs_id"> ca-app-pub-3940256099942544~3347511713</string>
-    <string name="country_item_banner_ad_id">ca-app-pub-9057526686789846/3995650487</string>
-    <string name="monetize_interstitial_ad_id">ca-app-pub-9057526686789846/4589766601</string>
-    <string name="country_details_rewarded_ad_id">ca-app-pub-9057526686789846/7024358251</string>
-    -->
 
     <string name="monetize_admobs_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="country_item_banner_ad_id">ca-app-pub-3940256099942544/9214589741</string>
     <string name="monetize_interstitial_ad_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="country_details_rewarded_ad_id">ca-app-pub-3940256099942544/8691691433</string>
-
 </resources>

@@ -5,8 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
 
+    <!-- android:name="com.devtides.androidmonetisation.application.Monitor" -->
+
     <application
-        android:name="com.devtides.androidmonetisation.application.Monitor"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,9 +20,10 @@
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <!-- training apps android:value="ca-app-pub-9057526686789846~3851400004" -->
         <!-- see TrildaDevCenter / Paul Plaquette admobs account for "Monetization"  Application ID or Yours Application entry -->
+        <!-- check build flavors for strings-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2192590212879558~7050143982"/>
+            android:value="@string/monetize_admobs_id"/>
 
         <activity
             android:name="com.devtides.androidmonetisation.activity.DetailActivity"
