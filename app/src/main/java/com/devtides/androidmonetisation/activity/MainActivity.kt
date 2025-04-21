@@ -104,19 +104,19 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         super.onDestroy()
     }
     override fun onCountryClick(country: Country) {
-        if(BuildConfig.FLAVOR == "free") {
-
-            SetupProgress(true)
-            SetupRetryButton()
-            SetupCountriesList()
-
-            ShowHideUnwantedItems(false)
-
-            loadRewardedAd()
-            showRewardedVideo(country)
-        } else {
+//        if(BuildConfig.FLAVOR == "free") {
+//
+//            SetupProgress(true)
+//            SetupRetryButton()
+//            SetupCountriesList()
+//
+//            ShowHideUnwantedItems(false)
+//
+//            loadRewardedAd()
+//            showRewardedVideo(country)
+//        } else {
             startActivity(DetailActivity.getIntent(this, country))
-        }
+//        }
 
         mClickedCountry = country
         mBillingAgent?.purchaseView()
@@ -128,30 +128,30 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     }
 
 
-    private fun loadRewardedAd() {
-        mIsLoading = true
-        var adRequest = AdRequest.Builder().build()
-
-        RewardedAd.load(
-            this,
-            AD_UNIT_ID,
-            adRequest,
-            object : RewardedAdLoadCallback() {
-
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Timber.tag("TAG").d(adError.message)
-                    mIsLoading = false
-                    mRewardedAd = null
-                }
-
-                override fun onAdLoaded(ad: RewardedAd) {
-                    Timber.tag("TAG").d( "Ad was loaded.")
-                    mRewardedAd = ad
-                    mIsLoading = false
-                }
-            }
-        )
-    }
+//    private fun loadRewardedAd() {
+//        mIsLoading = true
+//        var adRequest = AdRequest.Builder().build()
+//
+//        RewardedAd.load(
+//            this,
+//            AD_UNIT_ID,
+//            adRequest,
+//            object : RewardedAdLoadCallback() {
+//
+//                override fun onAdFailedToLoad(adError: LoadAdError) {
+//                    Timber.tag("TAG").d(adError.message)
+//                    mIsLoading = false
+//                    mRewardedAd = null
+//                }
+//
+//                override fun onAdLoaded(ad: RewardedAd) {
+//                    Timber.tag("TAG").d( "Ad was loaded.")
+//                    mRewardedAd = ad
+//                    mIsLoading = false
+//                }
+//            }
+//        )
+//    }
 
     private fun addCoins(coins: Int) {
         mCoinCount += coins
@@ -159,15 +159,19 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     }
 
     private fun SetupProgress(show: Boolean) {
-        binding.progress.visibility = if (mIsLoading) View.VISIBLE else View.GONE
+        binding.progress.visibility = View.GONE
+
+        //binding.progress.visibility = if (show && mIsLoading) View.VISIBLE else View.GONE
     }
 
     private fun SetupRetryButton() {
-        binding.progress.visibility = if (!mIsLoading) View.VISIBLE else View.GONE
+        binding.retryButton.visibility = View.GONE
+        //binding.progress.visibility = if (!mIsLoading) View.VISIBLE else View.GONE
     }
 
     private fun SetupCountriesList() {
-        binding.list.visibility = if (!mIsLoading) View.VISIBLE else View.GONE
+        binding.list.visibility =   View.VISIBLE
+        //binding.list.visibility = if (!mIsLoading) View.VISIBLE else View.GONE
     }
 
 
@@ -203,79 +207,79 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     // Create the game timer, which counts down to the end of the level
     // and shows the "retry" button.
-    private fun createTimer(time: Long) {
-        mCountdownTimer?.cancel()
+//    private fun createTimer(time: Long) {
+//        mCountdownTimer?.cancel()
+//
+//        mCountdownTimer =
+//            object : CountDownTimer(time * 1000, 50) {
+//                override fun onTick(millisUnitFinished: Long) {
+//                    mTimeRemaining = millisUnitFinished / 1000 + 1
+//                    binding.timer.text = "seconds remaining: $mTimeRemaining"
+//                }
+//
+//                override fun onFinish() {
+//                    binding.showVideoButton.visibility = View.VISIBLE
+//                    binding.timer.text = "The game has ended!"
+//                    addCoins(GAME_OVER_REWARD)
+//                    binding.retryButton.visibility = View.VISIBLE
+//                    mGameOver = true
+//                }
+//            }
+//
+//        mCountdownTimer?.start()
+//    }
 
-        mCountdownTimer =
-            object : CountDownTimer(time * 1000, 50) {
-                override fun onTick(millisUnitFinished: Long) {
-                    mTimeRemaining = millisUnitFinished / 1000 + 1
-                    binding.timer.text = "seconds remaining: $mTimeRemaining"
-                }
 
-                override fun onFinish() {
-                    binding.showVideoButton.visibility = View.VISIBLE
-                    binding.timer.text = "The game has ended!"
-                    addCoins(GAME_OVER_REWARD)
-                    binding.retryButton.visibility = View.VISIBLE
-                    mGameOver = true
-                }
-            }
-
-        mCountdownTimer?.start()
-    }
-
-
-    private fun showRewardedVideo(country: Country) {
-
-        mRewardedAd?.let() {
-            it.fullScreenContentCallback = object : FullScreenContentCallback() {
-
-                override fun onAdClicked() {
-                    Timber.tag("TAG").d("Ad was clicked.")
-                }
-
-                override fun onAdDismissedFullScreenContent() {
-                    Timber.tag("TAG").d("Ad was dismissed.")
-                    // Don't forget to set the ad reference to null so you
-                    // don't show the ad a second time.
-                    mRewardedAd = null
-                    if (googleMobileAdsConsentManager.canRequestAds) {
-                        //loadRewardedAd()
-                    }
-                }
-
-                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    Timber.tag("TAG").d("Ad failed to show.")
-                    // Don't forget to set the ad reference to null so you
-                    // don't show the ad a second time.
-                    mRewardedAd = null
-                    startActivity(DetailActivity.getIntent(this@MainActivity, country))
-                }
-
-                override fun onAdImpression(){
-
-                }
-
-                override fun onAdShowedFullScreenContent() {
-                    Timber.tag("TAG").d("Ad showed fullscreen content.")
-                    // Called when ad is dismissed.
-                    startActivity(DetailActivity.getIntent(this@MainActivity, country))
-                }
-            }
-
-            mRewardedAd?.show(
-                this,
-                OnUserEarnedRewardListener { rewardItem ->
-                    // Handle the reward.
-                    val rewardAmount = rewardItem.amount
-                    val rewardType = rewardItem.type
-                    addCoins(rewardAmount)
-                    Timber.tag("TAG").d("User earned the reward.")
-                },
-            )
-        }
-    }
+//      private fun showRewardedVideo(country: Country) {
+//
+//        mRewardedAd?.let() {
+//            it.fullScreenContentCallback = object : FullScreenContentCallback() {
+//
+//                override fun onAdClicked() {
+//                    Timber.tag("TAG").d("Ad was clicked.")
+//                }
+//
+//                override fun onAdDismissedFullScreenContent() {
+//                    Timber.tag("TAG").d("Ad was dismissed.")
+//                    // Don't forget to set the ad reference to null so you
+//                    // don't show the ad a second time.
+//                    mRewardedAd = null
+//                    if (googleMobileAdsConsentManager.canRequestAds) {
+//                        //loadRewardedAd()
+//                    }
+//                }
+//
+//                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+//                    Timber.tag("TAG").d("Ad failed to show.")
+//                    // Don't forget to set the ad reference to null so you
+//                    // don't show the ad a second time.
+//                    mRewardedAd = null
+//                    startActivity(DetailActivity.getIntent(this@MainActivity, country))
+//                }
+//
+//                override fun onAdImpression(){
+//
+//                }
+//
+//                override fun onAdShowedFullScreenContent() {
+//                    Timber.tag("TAG").d("Ad showed fullscreen content.")
+//                    // Called when ad is dismissed.
+//                    startActivity(DetailActivity.getIntent(this@MainActivity, country))
+//                }
+//            }
+//
+//            mRewardedAd?.show(
+//                this,
+//                OnUserEarnedRewardListener { rewardItem ->
+//                    // Handle the reward.
+//                    val rewardAmount = rewardItem.amount
+//                    val rewardType = rewardItem.type
+//                    addCoins(rewardAmount)
+//                    Timber.tag("TAG").d("User earned the reward.")
+//                },
+//            )
+//        }
+//    }
 //    private fun showRewardedAd(country: Country) {
 //
 //       val listener = object: RewardVideoAdListener
