@@ -48,12 +48,12 @@ class DetailActivity : AppCompatActivity() {
         populate()
 
 
-        CoroutineScope(Dispatchers.IO).launch {
-            runOnUiThread {
-                // Load an ad on the main thread.
-                loadAd()
-            }
-        }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            runOnUiThread {
+//                // Load an ad on the main thread.
+//                loadAd()
+//            }
+//        }
     }
 
 
