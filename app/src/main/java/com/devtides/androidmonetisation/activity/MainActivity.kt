@@ -24,6 +24,9 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View, BillingCallback {
@@ -80,6 +83,12 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                 // Regenerate the options menu to include a privacy setting.
                 invalidateOptionsMenu()
             }
+        }
+
+        val backgroundScope = CoroutineScope(Dispatchers.IO)
+        backgroundScope.launch {
+            // Initialize the Google Mobile Ads SDK on a background thread.
+            MobileAds.initialize(this@MainActivity) {}
         }
 
        mBillingAgent = BillingAgent(this, this)
@@ -272,7 +281,6 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                     country?.let() {
                         startActivity(DetailActivity.getIntent(this@MainActivity, country))
                     }
-
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
