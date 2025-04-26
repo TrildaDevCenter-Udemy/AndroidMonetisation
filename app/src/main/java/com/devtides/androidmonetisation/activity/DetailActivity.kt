@@ -15,6 +15,7 @@ import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.coroutines.CoroutineScope
@@ -46,6 +47,18 @@ class DetailActivity : AppCompatActivity() {
         country = value!!
 
         populate()
+
+        val backgroundScope = CoroutineScope(Dispatchers.IO)
+        backgroundScope.launch {
+            // Initialize the Google Mobile Ads SDK on a background thread.
+            MobileAds.initialize(this@DetailActivity) {
+                runOnUiThread {
+                    // Load an ad on the main thread.
+                    loadAd()
+                }
+            }
+        }
+
 
 
 //        CoroutineScope(Dispatchers.IO).launch {
@@ -122,7 +135,8 @@ class DetailActivity : AppCompatActivity() {
                 }
 
                 override fun onAdDismissedFullScreenContent() {
-                    Timber.tag("TAG")
+                    Timber
+                        .tag("TAG")
                         .d("Ad Dismissed fullscreen, called when the ad dismissed full screen content..")
                     // Don't forget to set the ad reference to null so you
                     // don't show the ad a second time.
@@ -130,7 +144,8 @@ class DetailActivity : AppCompatActivity() {
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    Timber.tag("TAG")
+                    Timber
+                        .tag("TAG")
                         .d("Ad failed , called when the ad failed to show full screen content.")
                     // Don't forget to set the ad reference to null so you
                     // don't show the ad a second time.
@@ -138,13 +153,15 @@ class DetailActivity : AppCompatActivity() {
                 }
 
                 override fun onAdImpression() {
-                    Timber.tag("TAG")
+                    Timber
+                        .tag("TAG")
                         .d("Ad Impression, Called when an impression is recorded for an ad..")
                     // Called when ad is dismissed.
                 }
 
                 override fun onAdShowedFullScreenContent() {
-                    Timber.tag("TAG")
+                    Timber
+                        .tag("TAG")
                         .d("Ad showed fullscreen content, Called when the ad showed the full screen content..")
                     // Called when ad is dismissed.
                 }
@@ -153,7 +170,7 @@ class DetailActivity : AppCompatActivity() {
             hasInterstitialAd?.show(this@DetailActivity)
         }
 
-            //reload an interstitial add for next flag details
+        //reload an interstitial add for next flag details
         loadAd()
     }
 
@@ -170,10 +187,10 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         // TODO load from resources
-        val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+        const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 
-        val PARAM_COUNTRY = "country"
-        val TAG = "DetailActivity"
+        const val PARAM_COUNTRY = "country"
+        const val TAG = "DetailActivity"
 
         var isLoading = false
         var hasInterstitialAd: InterstitialAd? = null
