@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package com.devtides.androidmonetisation.util
+package com.trildadevcenter.androidmonetisation.util
 
 import android.app.Activity
 import android.content.Context
-import com.devtides.androidmonetisation.activity.MainActivity
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentForm.OnConsentFormDismissedListener
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.FormError
 import com.google.android.ump.UserMessagingPlatform
-import kotlin.also
+import com.trildadevcenter.androidmonetisation.activity.MainActivity
 
 /**
  * The Google Mobile Ads SDK provides the User Messaging Platform (Google's IAB Certified consent
@@ -66,7 +65,7 @@ class GoogleMobileAdsConsentManager private constructor(context: Context) {
     val debugSettings =
       ConsentDebugSettings.Builder(activity)
         // .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-        .addTestDeviceHashedId(MainActivity.TEST_DEVICE_HASHED_ID)
+        .addTestDeviceHashedId(MainActivity.Companion.TEST_DEVICE_HASHED_ID)
         .build()
 
     val params = ConsentRequestParameters.Builder().setConsentDebugSettings(debugSettings).build()

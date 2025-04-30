@@ -1,15 +1,15 @@
-package com.devtides.androidmonetisation.activity
+package com.trildadevcenter.androidmonetisation.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.devtides.androidmonetisation.R
-import com.devtides.androidmonetisation.application.Monitor
-import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
+import com.trildadevcenter.androidmonetisation.R
+import com.trildadevcenter.androidmonetisation.application.Monitor
+import com.trildadevcenter.androidmonetisation.util.GoogleMobileAdsConsentManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
     // Create a timer so the SplashActivity will be displayed for a fixed amount of time.
     createTimer()
 
-    googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(applicationContext)
+    googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.Companion.getInstance(applicationContext)
     googleMobileAdsConsentManager.gatherConsent(this) { consentError ->
       if (consentError != null) {
         // Consent not obtained in current session.
@@ -103,7 +103,7 @@ class SplashActivity : AppCompatActivity() {
     // Set your test devices.
     MobileAds.setRequestConfiguration(
       RequestConfiguration.Builder()
-        .setTestDeviceIds(listOf(Monitor.TEST_DEVICE_HASHED_ID))
+        .setTestDeviceIds(listOf(Monitor.Companion.TEST_DEVICE_HASHED_ID))
         .build()
     )
 

@@ -1,7 +1,7 @@
-package com.devtides.androidmonetisation.presenter
+package com.trildadevcenter.androidmonetisation.presenter
 
-import com.devtides.androidmonetisation.model.CountriesService
-import com.devtides.androidmonetisation.model.Country
+import com.trildadevcenter.androidmonetisation.model.CountriesService
+import com.trildadevcenter.androidmonetisation.model.Country
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers

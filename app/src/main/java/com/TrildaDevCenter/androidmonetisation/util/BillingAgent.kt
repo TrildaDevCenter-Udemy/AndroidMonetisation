@@ -1,7 +1,11 @@
-package com.devtides.androidmonetisation.util
+package com.trildadevcenter.androidmonetisation.util
 
 import android.app.Activity
-import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
 
 class BillingAgent(val activity: Activity, val callback: BillingCallback): PurchasesUpdatedListener {
 

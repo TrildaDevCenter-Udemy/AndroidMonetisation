@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.model
+package com.trildadevcenter.androidmonetisation.model
 
 import android.os.Parcel
 import android.os.Parcelable

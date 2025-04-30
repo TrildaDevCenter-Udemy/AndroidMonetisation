@@ -1,21 +1,20 @@
-package com.devtides.androidmonetisation.activity
+package com.trildadevcenter.androidmonetisation.activity
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.devtides.androidmonetisation.BuildConfig
-import com.devtides.androidmonetisation.adapter.CountryClickListener
-import com.devtides.androidmonetisation.adapter.CountryListAdapter
-import com.devtides.androidmonetisation.databinding.ActivityMainBinding
-import com.devtides.androidmonetisation.model.BannerAd
-import com.devtides.androidmonetisation.model.Country
-import com.devtides.androidmonetisation.model.ListItem
-import com.devtides.androidmonetisation.presenter.CountriesPresenter
-import com.devtides.androidmonetisation.util.BillingAgent
-import com.devtides.androidmonetisation.util.BillingCallback
-import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.trildadevcenter.androidmonetisation.adapter.CountryClickListener
+import com.trildadevcenter.androidmonetisation.adapter.CountryListAdapter
+import com.trildadevcenter.androidmonetisation.model.BannerAd
+import com.trildadevcenter.androidmonetisation.model.Country
+import com.trildadevcenter.androidmonetisation.model.ListItem
+import com.trildadevcenter.androidmonetisation.presenter.CountriesPresenter
+import com.trildadevcenter.androidmonetisation.util.AdMonitor
+import com.trildadevcenter.androidmonetisation.util.BillingAgent
+import com.trildadevcenter.androidmonetisation.util.BillingCallback
+import com.trildadevcenter.androidmonetisation.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -24,17 +23,18 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.trildadevcenter.androidmonetisation.BuildConfig
+import com.trildadevcenter.androidmonetisation.databinding.ActivityMainBinding
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View, BillingCallback {
+class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View,
+    BillingCallback {
 
     private val countriesList = arrayListOf<ListItem>()
     private val countriesAdapter = CountryListAdapter(arrayListOf(), this)
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var mAdMonitor: AdMonitor
     private lateinit var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager
     private  var mRewardedAd: RewardedAd? = null
 
@@ -57,6 +57,8 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mAdMonitor = AdMonitor(this@MainActivity)
+
         binding.list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = countriesAdapter
@@ -65,31 +67,34 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         Timber.tag(TAG).d("Google Mobile Ads SDK Version: " + MobileAds.getVersion())
 
         updateUi()
+        mAdMonitor.checkOrAskUserConsent(this@MainActivity)
+        mAdMonitor.initializeMobileAdsSdk(this@MainActivity)
 
-        googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(applicationContext)
 
-        // [START can_request_ads]
-        googleMobileAdsConsentManager.gatherConsent(this) { error ->
-            if (error != null) {
-                // Consent not obtained in current session.
-                Timber.tag(TAG).d( "${error.errorCode}: ${error.message}")
-            }
+//        googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(applicationContext)
+//
+//        // [START can_request_ads]
+//        googleMobileAdsConsentManager.gatherConsent(this) { error ->
+//            if (error != null) {
+//                // Consent not obtained in current session.
+//                Timber.tag(TAG).d( "${error.errorCode}: ${error.message}")
+//            }
+//
+//            if (googleMobileAdsConsentManager.canRequestAds) {
+//                Timber.tag(TAG).d( "Consent is validated by User")
+//            }
+//
+//            if (googleMobileAdsConsentManager.isPrivacyOptionsRequired) {
+//                // Regenerate the options menu to include a privacy setting.
+//                this.invalidateOptionsMenu()
+//            }
+//        }
 
-            if (googleMobileAdsConsentManager.canRequestAds) {
-                Timber.tag(TAG).d( "Consent is validated by User")
-            }
-
-            if (googleMobileAdsConsentManager.isPrivacyOptionsRequired) {
-                // Regenerate the options menu to include a privacy setting.
-                invalidateOptionsMenu()
-            }
-        }
-
-        val backgroundScope = CoroutineScope(Dispatchers.IO)
-        backgroundScope.launch {
-            // Initialize the Google Mobile Ads SDK on a background thread.
-            MobileAds.initialize(this@MainActivity) {}
-        }
+//        val backgroundScope = CoroutineScope(Dispatchers.IO)
+//        backgroundScope.launch {
+//            // Initialize the Google Mobile Ads SDK on a background thread.
+//            MobileAds.initialize(this@MainActivity) {}
+//        }
 
        mBillingAgent = BillingAgent(this, this)
     }
@@ -113,7 +118,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     override fun onCountryClick(country: Country) {
         if(BuildConfig.FLAVOR == "free") {
 
-            mIsLoading = true
+            mIsLoading = false
             mCanRetry = false
             mShowCountries = false
             updateUi()

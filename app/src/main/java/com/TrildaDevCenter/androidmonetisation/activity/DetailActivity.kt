@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.activity
+package com.trildadevcenter.androidmonetisation.activity
 
 import android.content.Context
 import android.content.Intent
@@ -6,11 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
-import com.devtides.androidmonetisation.R
-import com.devtides.androidmonetisation.databinding.ActivityDetailBinding
-import com.devtides.androidmonetisation.model.Country
-import com.devtides.androidmonetisation.util.getProgressDrawable
-import com.devtides.androidmonetisation.util.loadImage
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -18,6 +13,11 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.trildadevcenter.androidmonetisation.R
+import com.trildadevcenter.androidmonetisation.databinding.ActivityDetailBinding
+import com.trildadevcenter.androidmonetisation.model.Country
+import com.trildadevcenter.androidmonetisation.util.getProgressDrawable
+import com.trildadevcenter.androidmonetisation.util.loadImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,23 +48,14 @@ class DetailActivity : AppCompatActivity() {
 
         populate()
 
-        val backgroundScope = CoroutineScope(Dispatchers.IO)
-        backgroundScope.launch {
-            // Initialize the Google Mobile Ads SDK on a background thread.
-            MobileAds.initialize(this@DetailActivity) {
-                runOnUiThread {
-                    // Load an ad on the main thread.
-                    loadAd()
-                }
-            }
-        }
-
-
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            runOnUiThread {
-//                // Load an ad on the main thread.
-//                loadAd()
+//        val backgroundScope = CoroutineScope(Dispatchers.IO)
+//        backgroundScope.launch {
+//            // Initialize the Google Mobile Ads SDK on a background thread.
+//            MobileAds.initialize(this@DetailActivity) {
+//                runOnUiThread {
+//                    // Load an ad on the main thread.
+//                    loadAd()
+//                }
 //            }
 //        }
     }

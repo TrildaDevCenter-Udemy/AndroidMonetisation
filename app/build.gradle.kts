@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "com.devtides.androidmonetisation"
+    namespace = "com.trildadevcenter.androidmonetisation"
     compileSdk = 35
     defaultConfig {
-        applicationId = "com.devtides.androidmonetisation"
+        applicationId = "com.trildadevcenter.androidmonetisation"
         minSdk = 24
         targetSdk = 35
         versionCode  = 3

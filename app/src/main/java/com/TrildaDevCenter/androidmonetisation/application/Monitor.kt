@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.application
+package com.trildadevcenter.androidmonetisation.application
 
 import android.app.Activity
 import android.app.Application
@@ -8,13 +8,13 @@ import android.widget.Toast
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
+import com.trildadevcenter.androidmonetisation.util.GoogleMobileAdsConsentManager
 import timber.log.Timber
 import java.util.Date
 
@@ -105,7 +105,7 @@ class Monitor :
   private inner class AppOpenAdManager {
 
     private var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager =
-      GoogleMobileAdsConsentManager.getInstance(applicationContext)
+      GoogleMobileAdsConsentManager.Companion.getInstance(applicationContext)
 
     private var appOpenAd: AppOpenAd? = null
     private var isLoadingAd = false
