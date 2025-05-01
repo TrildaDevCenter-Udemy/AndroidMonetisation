@@ -1,4 +1,4 @@
-package com.trildadevcenter.androidmonetisation.model
+package com.trildadevcenter.androidmonetization.model
 
 import android.os.Parcel
 import android.os.Parcelable

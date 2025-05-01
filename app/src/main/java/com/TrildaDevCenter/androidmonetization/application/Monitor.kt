@@ -1,4 +1,4 @@
-package com.trildadevcenter.androidmonetisation.application
+package com.trildadevcenter.androidmonetization.application
 
 import android.app.Activity
 import android.app.Application
@@ -14,7 +14,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
-import com.trildadevcenter.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.trildadevcenter.androidmonetization.util.GoogleMobileAdsConsentManager
 import timber.log.Timber
 import java.util.Date
 

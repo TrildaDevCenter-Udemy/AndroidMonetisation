@@ -1,4 +1,4 @@
-package com.trildadevcenter.androidmonetisation.util
+package com.trildadevcenter.androidmonetization.util
 
 import android.app.Activity
 import com.android.billingclient.api.BillingClient

@@ -26,16 +26,16 @@
             android:value="@string/monetize_admobs_id"/>
 
         <activity
-            android:name="com.trildadevcenter.androidmonetisation.activity.DetailActivity"
+            android:name="com.trildadevcenter.androidmonetization.activity.DetailActivity"
             android:hardwareAccelerated="true"
             android:exported="true"/>
         <activity
-            android:name="com.trildadevcenter.androidmonetisation.activity.SplashActivity"
+            android:name="com.trildadevcenter.androidmonetization.activity.SplashActivity"
             android:hardwareAccelerated="true"
             android:exported="true"/>
 
         <activity
-            android:name="com.trildadevcenter.androidmonetisation.activity.MainActivity"
+            android:name="com.trildadevcenter.androidmonetization.activity.MainActivity"
             android:hardwareAccelerated="true"
             android:exported="true">
             <intent-filter>

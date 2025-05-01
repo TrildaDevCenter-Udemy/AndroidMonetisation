@@ -1,4 +1,4 @@
-package com.trildadevcenter.androidmonetisation.activity
+package com.trildadevcenter.androidmonetization.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import com.trildadevcenter.androidmonetisation.R
-import com.trildadevcenter.androidmonetisation.application.Monitor
-import com.trildadevcenter.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.trildadevcenter.androidmonetization.R
+import com.trildadevcenter.androidmonetization.application.Monitor
+import com.trildadevcenter.androidmonetization.util.GoogleMobileAdsConsentManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

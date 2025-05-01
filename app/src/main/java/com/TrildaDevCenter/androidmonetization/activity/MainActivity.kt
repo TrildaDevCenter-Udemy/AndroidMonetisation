@@ -1,20 +1,20 @@
-package com.trildadevcenter.androidmonetisation.activity
+package com.trildadevcenter.androidmonetization.activity
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.trildadevcenter.androidmonetisation.adapter.CountryClickListener
-import com.trildadevcenter.androidmonetisation.adapter.CountryListAdapter
-import com.trildadevcenter.androidmonetisation.model.BannerAd
-import com.trildadevcenter.androidmonetisation.model.Country
-import com.trildadevcenter.androidmonetisation.model.ListItem
-import com.trildadevcenter.androidmonetisation.presenter.CountriesPresenter
-import com.trildadevcenter.androidmonetisation.util.AdMonitor
-import com.trildadevcenter.androidmonetisation.util.BillingAgent
-import com.trildadevcenter.androidmonetisation.util.BillingCallback
-import com.trildadevcenter.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.trildadevcenter.androidmonetization.adapter.CountryClickListener
+import com.trildadevcenter.androidmonetization.adapter.CountryListAdapter
+import com.trildadevcenter.androidmonetization.model.BannerAd
+import com.trildadevcenter.androidmonetization.model.Country
+import com.trildadevcenter.androidmonetization.model.ListItem
+import com.trildadevcenter.androidmonetization.presenter.CountriesPresenter
+import com.trildadevcenter.androidmonetization.util.AdMonitor
+import com.trildadevcenter.androidmonetization.util.BillingAgent
+import com.trildadevcenter.androidmonetization.util.BillingCallback
+import com.trildadevcenter.androidmonetization.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -23,8 +23,8 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.trildadevcenter.androidmonetisation.BuildConfig
-import com.trildadevcenter.androidmonetisation.databinding.ActivityMainBinding
+import com.trildadevcenter.androidmonetization.BuildConfig
+import com.trildadevcenter.androidmonetization.databinding.ActivityMainBinding
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresenter.View,
@@ -46,9 +46,11 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     private var mCoinCount: Int = 0
     private var mGameOver = false
     private var mGamePaused = false
-    private var mIsLoading = true
-    private var mCanRetry = true
-    private var mShowCountries = false
+
+    private var mShowProgress = false
+    private var mShowRetry = true
+    private var mShowList = false
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +68,12 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
         Timber.tag(TAG).d("Google Mobile Ads SDK Version: " + MobileAds.getVersion())
 
+        mShowProgress = false
+        mShowRetry = true
+        mShowList = false
+
         updateUi()
+
         mAdMonitor.checkOrAskUserConsent(this@MainActivity)
         mAdMonitor.initializeMobileAdsSdk(this@MainActivity)
 
@@ -118,23 +125,22 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     override fun onCountryClick(country: Country) {
         if(BuildConfig.FLAVOR == "free") {
 
-            mIsLoading = false
-            mCanRetry = false
-            mShowCountries = false
+            mShowProgress = false
+            mShowRetry = false
+            mShowList = false
             updateUi()
 
             // do we have enough ad coins  ?
             if (canCoins(DETAILS_COST)) {
                 // yes : we start the country details activity
-                startActivity(DetailActivity.getIntent(this, country))
+                StartDetailsActivity(country)
             }
             else {
                 // no : we load an ad to win 10 ad coins
                 loadRewardedAd()
             }
-
         } else {
-            startActivity(DetailActivity.getIntent(this, country))
+            StartDetailsActivity(country)
         }
 
         mClickedCountry = country
@@ -143,14 +149,13 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     }
 
     override fun onTokenConsumed() {
-        startActivity(DetailActivity.getIntent(this@MainActivity, mClickedCountry))
+        StartDetailsActivity(mClickedCountry)
     }
 
-
     private fun loadRewardedAd() {
-        mIsLoading = true
-        mCanRetry = false
-        mShowCountries = false
+        mShowProgress = true
+        mShowRetry = false
+        mShowList = false
         updateUi()
 
         var adRequest = AdRequest.Builder().build()
@@ -163,7 +168,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     Timber.tag("TAG").d(adError.message)
-                    mIsLoading = false
+                    mShowProgress = false
                     updateUi()
 
                     mRewardedAd = null
@@ -182,7 +187,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                     Timber.tag("TAG").d("Ad was loaded.")
                     Toast.makeText(this@MainActivity, "onAdLoaded()", Toast.LENGTH_SHORT).show()
 
-                    mIsLoading = false
+                    mShowProgress = false
                     updateUi()
 
                     mRewardedAd = ad
@@ -213,10 +218,15 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     private fun SetupProgress() {
         with(binding) {
-            progress.visibility = if (mIsLoading xor (progress.visibility == View.VISIBLE)) {
-                View.VISIBLE
-            } else {
-                View.GONE
+            with(progress) {
+                if (mShowProgress xor (this.visibility == View.VISIBLE)) {
+                    // something has to change, we manage a flip flop
+                    this.visibility = if (mShowProgress) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                }
             }
         }
     }
@@ -224,10 +234,15 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     private fun SetupRetryButton() {
         with(binding) {
-            progress.visibility = if (mCanRetry xor (retryButton.visibility == View.VISIBLE)) {
-                View.VISIBLE
-            } else {
-                View.GONE
+            with(retryButton) {
+                if (mShowRetry xor (this.visibility == View.VISIBLE)) {
+                    // something has to change, we manage a flip flop
+                    this.visibility = if (mShowRetry) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                }
             }
         }
     }
@@ -235,26 +250,21 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
     private fun SetupCountriesList() {
         with(binding) {
-            list.visibility =  if (mShowCountries xor (list.visibility == View.VISIBLE)) {
-                View.VISIBLE
-            } else {
-                View.GONE
+            with(list) {
+                if (mShowList xor (this.visibility == View.VISIBLE)) {
+                    // something has to change, we manage a flip flop
+                    this.visibility = if (mShowList) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                }
             }
-        }
-    }
-
-    private fun ShowHideUnwantedItems() {
-        with(binding) {
-            gameTitle.visibility = View.GONE
-            coinCountText.visibility = View.GONE
-            showVideoButton.visibility = View.GONE
-            timer.visibility = View.GONE
         }
     }
 
     private fun updateUi() {
         SetupRetryButton()
-        ShowHideUnwantedItems()
         SetupCountriesList()
         SetupProgress()
     }
@@ -262,8 +272,8 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     private fun showRewardedVideo(country: Country?) {
 
         mRewardedAd?.let() {
-            mIsLoading = true
-            mShowCountries = false
+            mShowProgress = true
+            mShowList = false
 
             it.fullScreenContentCallback = object : FullScreenContentCallback() {
 
@@ -283,9 +293,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                     }
                     mRewardedAd = null
 
-                    country?.let() {
-                        startActivity(DetailActivity.getIntent(this@MainActivity, country))
-                    }
+                    StartDetailsActivity(country)
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
@@ -296,9 +304,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                     // don't show the ad a second time.
                     mRewardedAd = null
 
-                    country?.let() {
-                        startActivity(DetailActivity.getIntent(this@MainActivity, country))
-                    }
+                    StartDetailsActivity(country)
                 }
 
                 override fun onAdImpression(){
@@ -310,7 +316,7 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                     Timber.tag("TAG").d("Ad showed fullscreen content.")
                     Toast.makeText(this@MainActivity, "Ad showed fullscreen content", Toast.LENGTH_SHORT).show()
 
-                    mIsLoading = false
+                    mShowProgress = false
                 }
             }
 
@@ -322,9 +328,9 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
                     val rewardType = rewardItem.type
                     addCoins(rewardAmount)
                     Timber.tag("TAG").d("User earned the reward.")
-                    mIsLoading = false
-                    mCanRetry = false
-                    mShowCountries = true
+                    mShowProgress = false
+                    mShowRetry = false
+                    mShowList = true
                     updateUi()
                 },
             )
@@ -332,8 +338,9 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
     }
 
     fun onRetry(v: View) {
-        mIsLoading = true
-        mShowCountries = false
+        mShowProgress = true
+        mShowRetry = false
+        mShowList = false
 
         updateUi()
 
@@ -356,9 +363,9 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
 
         countriesAdapter.updateCountries(countriesList)
 
-        mIsLoading = false
-        mCanRetry = false
-        mShowCountries = true
+        mShowProgress = false
+        mShowRetry = false
+        mShowList = true
 
         updateUi()
     }
@@ -390,12 +397,28 @@ class MainActivity : AppCompatActivity(), CountryClickListener, CountriesPresent
         updateUi()
     }
 
+    private fun StartDetailsActivity(country: Country?) {
+
+        mShowProgress = false
+        mShowRetry = false
+        mShowList = true
+
+        updateUi()
+
+        country?.let {
+            startActivity(DetailActivity.getIntent(this@MainActivity, country))
+        }
+    }
+
+
     companion object {
         // This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.
         private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917"
         private const val COUNTER_TIME = 10L
         private const val DETAILS_COST = 1
         private const val TAG = "MainActivity"
+
+
 
         // Check your logcat output for the test device hashed ID e.g.
         // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))

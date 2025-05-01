@@ -1,7 +1,8 @@
-package com.trildadevcenter.androidmonetisation.presenter
+package com.trildadevcenter.androidmonetization.presenter
 
-import com.trildadevcenter.androidmonetisation.model.CountriesService
-import com.trildadevcenter.androidmonetisation.model.Country
+import com.trildadevcenter.androidmonetization.activity.MainActivity
+import com.trildadevcenter.androidmonetization.model.CountriesService
+import com.trildadevcenter.androidmonetization.model.Country
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -26,6 +27,7 @@ class CountriesPresenter(val view: View) {
 
                 override fun onError(e: Throwable) {
                     e?.printStackTrace()
+
                     view.onError()
                 }
             })

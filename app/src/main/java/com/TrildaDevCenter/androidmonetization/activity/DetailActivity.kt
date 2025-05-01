@@ -1,4 +1,4 @@
-package com.trildadevcenter.androidmonetisation.activity
+package com.trildadevcenter.androidmonetization.activity
 
 import android.content.Context
 import android.content.Intent
@@ -10,17 +10,13 @@ import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.trildadevcenter.androidmonetisation.R
-import com.trildadevcenter.androidmonetisation.databinding.ActivityDetailBinding
-import com.trildadevcenter.androidmonetisation.model.Country
-import com.trildadevcenter.androidmonetisation.util.getProgressDrawable
-import com.trildadevcenter.androidmonetisation.util.loadImage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.trildadevcenter.androidmonetization.R
+import com.trildadevcenter.androidmonetization.databinding.ActivityDetailBinding
+import com.trildadevcenter.androidmonetization.model.Country
+import com.trildadevcenter.androidmonetization.util.getProgressDrawable
+import com.trildadevcenter.androidmonetization.util.loadImage
 import timber.log.Timber
 
 

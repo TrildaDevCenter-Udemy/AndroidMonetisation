@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AndroidMonetisation"
+rootProject.name = "AndroidMonetization"
 include (":app")

@@ -1,17 +1,17 @@
-package com.trildadevcenter.androidmonetisation.adapter
+package com.trildadevcenter.androidmonetization.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
-import com.trildadevcenter.androidmonetisation.databinding.AdRowLayoutBinding
-import com.trildadevcenter.androidmonetisation.databinding.RowLayoutBinding
-import com.trildadevcenter.androidmonetisation.model.Country
-import com.trildadevcenter.androidmonetisation.model.ListItem
-import com.trildadevcenter.androidmonetisation.model.TYPE_COUNTRY
-import com.trildadevcenter.androidmonetisation.util.getProgressDrawable
-import com.trildadevcenter.androidmonetisation.util.loadImage
+import com.trildadevcenter.androidmonetization.databinding.AdRowLayoutBinding
+import com.trildadevcenter.androidmonetization.databinding.RowLayoutBinding
+import com.trildadevcenter.androidmonetization.model.Country
+import com.trildadevcenter.androidmonetization.model.ListItem
+import com.trildadevcenter.androidmonetization.model.TYPE_COUNTRY
+import com.trildadevcenter.androidmonetization.util.getProgressDrawable
+import com.trildadevcenter.androidmonetization.util.loadImage
 
 
 class CountryListAdapter(private var countries: ArrayList<ListItem>, private val clickListener: CountryClickListener):

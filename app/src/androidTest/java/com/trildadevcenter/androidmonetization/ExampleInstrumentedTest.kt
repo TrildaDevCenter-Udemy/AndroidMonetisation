@@ -1,4 +1,4 @@
-git switchpackage com.trildadevcenter.androidmonetisation
+package com.trildadevcenter.androidmonetization
 
 
 import androidx.test.ext.junit.runners.AndroidJUnit4

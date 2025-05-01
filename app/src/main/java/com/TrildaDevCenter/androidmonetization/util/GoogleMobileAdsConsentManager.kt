@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.trildadevcenter.androidmonetisation.util
+package com.trildadevcenter.androidmonetization.util
 
 import android.app.Activity
 import android.content.Context
@@ -24,7 +24,7 @@ import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.FormError
 import com.google.android.ump.UserMessagingPlatform
-import com.trildadevcenter.androidmonetisation.activity.MainActivity
+import com.trildadevcenter.androidmonetization.activity.MainActivity
 
 /**
  * The Google Mobile Ads SDK provides the User Messaging Platform (Google's IAB Certified consent

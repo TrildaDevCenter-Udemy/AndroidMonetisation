@@ -1,4 +1,4 @@
-package com.trildadevcenter.androidmonetisation
+package com.trildadevcenter.androidmonetization
 
 import org.junit.Test
 
