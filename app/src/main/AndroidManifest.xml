@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
 
-    <!-- android:name="com.trildadevcenter.androidmonetisation.application.Monitor" -->
+    <!-- android:name="com.trildadevcenter.androidmonetization.application.Monitor" -->
 
     <application
         android:allowBackup="true"
