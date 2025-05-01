@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
 
-    <!-- android:name="com.devtides.androidmonetisation.application.Monitor" -->
+    <!-- android:name="com.devtides.androidmonetization.application.Monitor" -->
 
     <application
         android:allowBackup="true"
@@ -26,16 +26,16 @@
             android:value="@string/monetize_admobs_id"/>
 
         <activity
-            android:name="com.devtides.androidmonetisation.activity.DetailActivity"
+            android:name="com.devtides.androidmonetization.activity.DetailActivity"
             android:hardwareAccelerated="true"
             android:exported="true"/>
         <activity
-            android:name="com.devtides.androidmonetisation.activity.SplashActivity"
+            android:name="com.devtides.androidmonetization.activity.SplashActivity"
             android:hardwareAccelerated="true"
             android:exported="true"/>
 
         <activity
-            android:name="com.devtides.androidmonetisation.activity.MainActivity"
+            android:name="com.devtides.androidmonetization.activity.MainActivity"
             android:hardwareAccelerated="true"
             android:exported="true">
             <intent-filter>

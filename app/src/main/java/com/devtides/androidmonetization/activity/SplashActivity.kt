@@ -1,13 +1,13 @@
-package com.devtides.androidmonetisation.activity
+package com.devtides.androidmonetization.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.devtides.androidmonetisation.R
-import com.devtides.androidmonetisation.application.Monitor
-import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.devtides.androidmonetization.R
+import com.devtides.androidmonetization.application.Monitor
+import com.devtides.androidmonetization.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import kotlinx.coroutines.CoroutineScope

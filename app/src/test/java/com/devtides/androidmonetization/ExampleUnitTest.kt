@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation
+package com.devtides.androidmonetization
 
 import org.junit.Test
 

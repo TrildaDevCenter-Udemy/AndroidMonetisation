@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.util
+package com.devtides.androidmonetization.util
 
 interface BillingCallback {
     fun onTokenConsumed()

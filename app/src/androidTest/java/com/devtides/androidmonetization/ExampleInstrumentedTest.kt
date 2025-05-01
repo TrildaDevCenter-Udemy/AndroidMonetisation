@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation
+package com.devtides.androidmonetization
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

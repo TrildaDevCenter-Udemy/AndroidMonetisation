@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.model
+package com.devtides.androidmonetization.model
 
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET

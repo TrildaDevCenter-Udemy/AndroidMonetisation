@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.activity
+package com.devtides.androidmonetization.activity
 
 import android.content.Context
 import android.content.Intent
@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
-import com.devtides.androidmonetisation.R
-import com.devtides.androidmonetisation.databinding.ActivityDetailBinding
-import com.devtides.androidmonetisation.model.Country
-import com.devtides.androidmonetisation.util.getProgressDrawable
-import com.devtides.androidmonetisation.util.loadImage
+import com.devtides.androidmonetization.R
+import com.devtides.androidmonetization.databinding.ActivityDetailBinding
+import com.devtides.androidmonetization.model.Country
+import com.devtides.androidmonetization.util.getProgressDrawable
+import com.devtides.androidmonetization.util.loadImage
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback

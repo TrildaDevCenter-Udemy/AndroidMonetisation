@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.devtides.androidmonetisation.util
+package com.devtides.androidmonetization.util
 
 import android.app.Activity
 import android.content.Context
-import com.devtides.androidmonetisation.activity.MainActivity
+import com.devtides.androidmonetization.activity.MainActivity
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentForm.OnConsentFormDismissedListener
 import com.google.android.ump.ConsentInformation

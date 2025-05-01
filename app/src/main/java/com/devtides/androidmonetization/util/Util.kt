@@ -1,11 +1,11 @@
-package com.devtides.androidmonetisation.util
+package com.devtides.androidmonetization.util
 
 import android.content.Context
 import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.devtides.androidmonetisation.R
+import com.devtides.androidmonetization.R
 
 fun getProgressDrawable(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {

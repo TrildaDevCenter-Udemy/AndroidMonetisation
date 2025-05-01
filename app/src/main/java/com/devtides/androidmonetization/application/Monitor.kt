@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.application
+package com.devtides.androidmonetization.application
 
 import android.app.Activity
 import android.app.Application
@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.devtides.androidmonetisation.util.GoogleMobileAdsConsentManager
+import com.devtides.androidmonetization.util.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback

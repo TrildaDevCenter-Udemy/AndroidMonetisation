@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.model
+package com.devtides.androidmonetization.model
 
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory

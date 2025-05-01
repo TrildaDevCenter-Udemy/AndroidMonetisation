@@ -1,4 +1,4 @@
-package com.devtides.androidmonetisation.util
+package com.devtides.androidmonetization.util
 
 import android.app.Activity
 import com.android.billingclient.api.*

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devtides.androidmonetisation.activity.SplashActivity">
+    tools:context="com.devtides.androidmonetization.activity.SplashActivity">
 
   <ImageView
       android:id="@+id/splash_activity_image"

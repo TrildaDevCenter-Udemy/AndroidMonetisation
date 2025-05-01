@@ -1,12 +1,8 @@
-package com.devtides.androidmonetisation.util
+package com.devtides.androidmonetization.util
 
-import com.devtides.androidmonetisation.activity.SplashActivity
-import com.devtides.androidmonetisation.application.Monitor
+import com.devtides.androidmonetization.application.Monitor
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 class AdMonitor {
