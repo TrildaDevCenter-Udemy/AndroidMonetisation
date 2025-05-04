@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "com.trildadevcenter.androidmonetization"
+    namespace = "io.github.trildadevcenter.androidmonetization"
     compileSdk = 35
     defaultConfig {
-        applicationId = "com.trildadevcenter.androidmonetization"
+        applicationId = "io.github.trildadevcenter.androidmonetization"
         minSdk = 24
         targetSdk = 35
         versionCode  = 3
