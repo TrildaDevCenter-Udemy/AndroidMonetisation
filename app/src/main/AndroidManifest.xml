@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
 
-    <!-- android:name="com.trildadevcenter.androidmonetization.application.Monitor" -->
+    <!-- android:name="io.github.trildadevcenter.androidmonetization.application.Monitor" -->
 
     <application
         android:allowBackup="true"
@@ -26,16 +27,16 @@
             android:value="@string/monetize_admobs_id"/>
 
         <activity
-            android:name="com.trildadevcenter.androidmonetization.activity.DetailActivity"
+            android:name="io.github.trildadevcenter.androidmonetization.activity.DetailActivity"
             android:hardwareAccelerated="true"
             android:exported="true"/>
         <activity
-            android:name="com.trildadevcenter.androidmonetization.activity.SplashActivity"
+            android:name="io.github.trildadevcenter.androidmonetization.activity.SplashActivity"
             android:hardwareAccelerated="true"
             android:exported="true"/>
 
         <activity
-            android:name="com.trildadevcenter.androidmonetization.activity.MainActivity"
+            android:name="io.github.trildadevcenter.androidmonetization.activity.MainActivity"
             android:hardwareAccelerated="true"
             android:exported="true">
             <intent-filter>
