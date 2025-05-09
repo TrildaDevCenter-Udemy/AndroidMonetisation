@@ -7,13 +7,13 @@ plugins {
 
 android {
     namespace = "io.github.trildadevcenter.androidmonetization"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         applicationId = "io.github.trildadevcenter.androidmonetization"
         minSdk = 24
         targetSdk = 35
-        versionCode  = 3
-        versionName = "1.3.0"
+        versionCode  = 5
+        versionName = "1.5.0"
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
